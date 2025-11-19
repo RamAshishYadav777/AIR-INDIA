@@ -1,0 +1,1384 @@
+[
+  {
+    "iata": "ATL",
+    "icao": "KATL",
+    "name": "Hartsfield–Jackson Atlanta International Airport",
+    "city": "Atlanta",
+    "country": "United States"
+  },
+  {
+    "iata": "PEK",
+    "icao": "ZBAA",
+    "name": "Beijing Capital International Airport",
+    "city": "Beijing",
+    "country": "China"
+  },
+  {
+    "iata": "DXB",
+    "icao": "OMDB",
+    "name": "Dubai International Airport",
+    "city": "Dubai",
+    "country": "United Arab Emirates"
+  },
+  {
+    "iata": "LAX",
+    "icao": "KLAX",
+    "name": "Los Angeles International Airport",
+    "city": "Los Angeles",
+    "country": "United States"
+  },
+  {
+    "iata": "HND",
+    "icao": "RJTT",
+    "name": "Tokyo Haneda Airport",
+    "city": "Tokyo",
+    "country": "Japan"
+  },
+  {
+    "iata": "ORD",
+    "icao": "KORD",
+    "name": "O'Hare International Airport",
+    "city": "Chicago",
+    "country": "United States"
+  },
+  {
+    "iata": "LHR",
+    "icao": "EGLL",
+    "name": "London Heathrow Airport",
+    "city": "London",
+    "country": "United Kingdom"
+  },
+  {
+    "iata": "HKG",
+    "icao": "VHHH",
+    "name": "Hong Kong International Airport",
+    "city": "Hong Kong",
+    "country": "China"
+  },
+  {
+    "iata": "PVG",
+    "icao": "ZSPD",
+    "name": "Shanghai Pudong International Airport",
+    "city": "Shanghai",
+    "country": "China"
+  },
+  {
+    "iata": "CDG",
+    "icao": "LFPG",
+    "name": "Paris Charles de Gaulle Airport",
+    "city": "Paris",
+    "country": "France"
+  },
+  {
+    "iata": "AMS",
+    "icao": "EHAM",
+    "name": "Amsterdam Schiphol Airport",
+    "city": "Amsterdam",
+    "country": "Netherlands"
+  },
+  {
+    "iata": "FRA",
+    "icao": "EDDF",
+    "name": "Frankfurt Airport",
+    "city": "Frankfurt",
+    "country": "Germany"
+  },
+  {
+    "iata": "DFW",
+    "icao": "KDFW",
+    "name": "Dallas/Fort Worth International Airport",
+    "city": "Dallas–Fort Worth",
+    "country": "United States"
+  },
+  {
+    "iata": "CAN",
+    "icao": "ZGGG",
+    "name": "Guangzhou Baiyun International Airport",
+    "city": "Guangzhou",
+    "country": "China"
+  },
+  {
+    "iata": "ICN",
+    "icao": "RKSI",
+    "name": "Incheon International Airport",
+    "city": "Seoul",
+    "country": "South Korea"
+  },
+  {
+    "iata": "DEN",
+    "icao": "KDEN",
+    "name": "Denver International Airport",
+    "city": "Denver",
+    "country": "United States"
+  },
+  {
+    "iata": "DEL",
+    "icao": "VIDP",
+    "name": "Indira Gandhi International Airport",
+    "city": "New Delhi",
+    "country": "India"
+  },
+  {
+    "iata": "SIN",
+    "icao": "WSSS",
+    "name": "Singapore Changi Airport",
+    "city": "Singapore",
+    "country": "Singapore"
+  },
+  {
+    "iata": "BKK",
+    "icao": "VTBS",
+    "name": "Suvarnabhumi Airport",
+    "city": "Bangkok",
+    "country": "Thailand"
+  },
+  {
+    "iata": "JFK",
+    "icao": "KJFK",
+    "name": "John F. Kennedy International Airport",
+    "city": "New York City",
+    "country": "United States"
+  },
+  {
+    "iata": "KUL",
+    "icao": "WMKK",
+    "name": "Kuala Lumpur International Airport",
+    "city": "Kuala Lumpur",
+    "country": "Malaysia"
+  },
+  {
+    "iata": "MAD",
+    "icao": "LEMD",
+    "name": "Adolfo Suárez Madrid–Barajas Airport",
+    "city": "Madrid",
+    "country": "Spain"
+  },
+  {
+    "iata": "SFO",
+    "icao": "KSFO",
+    "name": "San Francisco International Airport",
+    "city": "San Francisco",
+    "country": "United States"
+  },
+  {
+    "iata": "MIA",
+    "icao": "KMIA",
+    "name": "Miami International Airport",
+    "city": "Miami",
+    "country": "United States"
+  },
+  {
+    "iata": "BCN",
+    "icao": "LEBL",
+    "name": "Barcelona–El Prat Airport",
+    "city": "Barcelona",
+    "country": "Spain"
+  },
+  {
+    "iata": "YYZ",
+    "icao": "CYYZ",
+    "name": "Toronto Pearson International Airport",
+    "city": "Toronto",
+    "country": "Canada"
+  },
+  {
+    "iata": "MUC",
+    "icao": "EDDM",
+    "name": "Munich Airport",
+    "city": "Munich",
+    "country": "Germany"
+  },
+  {
+    "iata": "LGW",
+    "icao": "EGKK",
+    "name": "London Gatwick Airport",
+    "city": "London",
+    "country": "United Kingdom"
+  },
+  {
+    "iata": "SYD",
+    "icao": "YSSY",
+    "name": "Sydney Kingsford Smith Airport",
+    "city": "Sydney",
+    "country": "Australia"
+  },
+  {
+    "iata": "GRU",
+    "icao": "SBGR",
+    "name": "São Paulo/Guarulhos International Airport",
+    "city": "São Paulo",
+    "country": "Brazil"
+  },
+  {
+    "iata": "SZX",
+    "icao": "ZGSZ",
+    "name": "Shenzhen Bao'an International Airport",
+    "city": "Shenzhen",
+    "country": "China"
+  },
+  {
+    "iata": "SEA",
+    "icao": "KSEA",
+    "name": "Seattle–Tacoma International Airport",
+    "city": "Seattle",
+    "country": "United States"
+  },
+  {
+    "iata": "MCO",
+    "icao": "KMCO",
+    "name": "Orlando International Airport",
+    "city": "Orlando",
+    "country": "United States"
+  },
+  {
+    "iata": "PHX",
+    "icao": "KPHX",
+    "name": "Phoenix Sky Harbor International Airport",
+    "city": "Phoenix",
+    "country": "United States"
+  },
+  {
+    "iata": "IAH",
+    "icao": "KIAH",
+    "name": "George Bush Intercontinental Airport",
+    "city": "Houston",
+    "country": "United States"
+  },
+  {
+    "iata": "CLT",
+    "icao": "KCLT",
+    "name": "Charlotte Douglas International Airport",
+    "city": "Charlotte",
+    "country": "United States"
+  },
+  {
+    "iata": "MEX",
+    "icao": "MMMX",
+    "name": "Mexico City International Airport",
+    "city": "Mexico City",
+    "country": "Mexico"
+  },
+  {
+    "iata": "FCO",
+    "icao": "LIRF",
+    "name": "Leonardo da Vinci–Fiumicino Airport",
+    "city": "Rome",
+    "country": "Italy"
+  },
+  {
+    "iata": "EWR",
+    "icao": "KEWR",
+    "name": "Newark Liberty International Airport",
+    "city": "Newark",
+    "country": "United States"
+  },
+  {
+    "iata": "BOM",
+    "icao": "VABB",
+    "name": "Chhatrapati Shivaji Maharaj International Airport",
+    "city": "Mumbai",
+    "country": "India"
+  },
+  {
+    "iata": "DOH",
+    "icao": "OTHH",
+    "name": "Hamad International Airport",
+    "city": "Doha",
+    "country": "Qatar"
+  },
+  {
+    "iata": "ZRH",
+    "icao": "LSZH",
+    "name": "Zurich Airport",
+    "city": "Zurich",
+    "country": "Switzerland"
+  },
+  {
+    "iata": "VIE",
+    "icao": "LOWW",
+    "name": "Vienna International Airport",
+    "city": "Vienna",
+    "country": "Austria"
+  },
+  {
+    "iata": "BOS",
+    "icao": "KBOS",
+    "name": "Boston Logan International Airport",
+    "city": "Boston",
+    "country": "United States"
+  },
+  {
+    "iata": "SVO",
+    "icao": "UUEE",
+    "name": "Sheremetyevo International Airport",
+    "city": "Moscow",
+    "country": "Russia"
+  },
+  {
+    "iata": "DME",
+    "icao": "UUDD",
+    "name": "Domodedovo Moscow Airport",
+    "city": "Moscow",
+    "country": "Russia"
+  },
+  {
+    "iata": "JNB",
+    "icao": "FAOR",
+    "name": "O. R. Tambo International Airport",
+    "city": "Johannesburg",
+    "country": "South Africa"
+  },
+  {
+    "iata": "CPT",
+    "icao": "FACT",
+    "name": "Cape Town International Airport",
+    "city": "Cape Town",
+    "country": "South Africa"
+  },
+  {
+    "iata": "OSL",
+    "icao": "ENGM",
+    "name": "Oslo Gardermoen Airport",
+    "city": "Oslo",
+    "country": "Norway"
+  },
+  {
+    "iata": "CPH",
+    "icao": "EKCH",
+    "name": "Copenhagen Airport",
+    "city": "Copenhagen",
+    "country": "Denmark"
+  },
+  {
+    "iata": "ARN",
+    "icao": "ESSA",
+    "name": "Stockholm Arlanda Airport",
+    "city": "Stockholm",
+    "country": "Sweden"
+  },
+  {
+    "iata": "HEL",
+    "icao": "EFHK",
+    "name": "Helsinki Airport",
+    "city": "Helsinki",
+    "country": "Finland"
+  },
+  {
+    "iata": "BRU",
+    "icao": "EBBR",
+    "name": "Brussels Airport",
+    "city": "Brussels",
+    "country": "Belgium"
+  },
+  {
+    "iata": "MAN",
+    "icao": "EGCC",
+    "name": "Manchester Airport",
+    "city": "Manchester",
+    "country": "United Kingdom"
+  },
+  {
+    "iata": "DUB",
+    "icao": "EIDW",
+    "name": "Dublin Airport",
+    "city": "Dublin",
+    "country": "Ireland"
+  },
+  {
+    "iata": "YVR",
+    "icao": "CYVR",
+    "name": "Vancouver International Airport",
+    "city": "Vancouver",
+    "country": "Canada"
+  },
+  {
+    "iata": "YUL",
+    "icao": "CYUL",
+    "name": "Montréal–Trudeau International Airport",
+    "city": "Montreal",
+    "country": "Canada"
+  },
+  {
+    "iata": "SCL",
+    "icao": "SCEL",
+    "name": "Arturo Merino Benítez International Airport",
+    "city": "Santiago",
+    "country": "Chile"
+  },
+  {
+    "iata": "LIM",
+    "icao": "SPJC",
+    "name": "Jorge Chávez International Airport",
+    "city": "Lima",
+    "country": "Peru"
+  },
+  {
+    "iata": "GIG",
+    "icao": "SBGL",
+    "name": "Rio de Janeiro–Galeão International Airport",
+    "city": "Rio de Janeiro",
+    "country": "Brazil"
+  },
+  {
+    "iata": "AUH",
+    "icao": "OMAA",
+    "name": "Abu Dhabi International Airport",
+    "city": "Abu Dhabi",
+    "country": "United Arab Emirates"
+  },
+  {
+    "iata": "MNL",
+    "icao": "RPLL",
+    "name": "Ninoy Aquino International Airport",
+    "city": "Manila",
+    "country": "Philippines"
+  },
+  {
+    "iata": "CGK",
+    "icao": "WIII",
+    "name": "Soekarno–Hatta International Airport",
+    "city": "Jakarta",
+    "country": "Indonesia"
+  },
+  {
+    "iata": "AKL",
+    "icao": "NZAA",
+    "name": "Auckland Airport",
+    "city": "Auckland",
+    "country": "New Zealand"
+  },
+  {
+    "iata": "HNL",
+    "icao": "PHNL",
+    "name": "Daniel K. Inouye International Airport",
+    "city": "Honolulu",
+    "country": "United States"
+  },
+  {
+    "iata": "DTW",
+    "icao": "KDTW",
+    "name": "Detroit Metropolitan Wayne County Airport",
+    "city": "Detroit",
+    "country": "United States"
+  },
+  {
+    "iata": "MSP",
+    "icao": "KMSP",
+    "name": "Minneapolis–Saint Paul International Airport",
+    "city": "Minneapolis",
+    "country": "United States"
+  },
+  {
+    "iata": "FLL",
+    "icao": "KFLL",
+    "name": "Fort Lauderdale–Hollywood International Airport",
+    "city": "Fort Lauderdale",
+    "country": "United States"
+  },
+  {
+    "iata": "PHL",
+    "icao": "KPHL",
+    "name": "Philadelphia International Airport",
+    "city": "Philadelphia",
+    "country": "United States"
+  },
+  {
+    "iata": "BWI",
+    "icao": "KBWI",
+    "name": "Baltimore/Washington International Thurgood Marshall Airport",
+    "city": "Baltimore",
+    "country": "United States"
+  },
+  {
+    "iata": "SAN",
+    "icao": "KSAN",
+    "name": "San Diego International Airport",
+    "city": "San Diego",
+    "country": "United States"
+  },
+  {
+    "iata": "TPA",
+    "icao": "KTPA",
+    "name": "Tampa International Airport",
+    "city": "Tampa",
+    "country": "United States"
+  },
+  {
+    "iata": "MEL",
+    "icao": "YMML",
+    "name": "Melbourne Airport",
+    "city": "Melbourne",
+    "country": "Australia"
+  },
+  {
+    "iata": "PER",
+    "icao": "YPPH",
+    "name": "Perth Airport",
+    "city": "Perth",
+    "country": "Australia"
+  },
+  {
+    "iata": "ADL",
+    "icao": "YPAD",
+    "name": "Adelaide Airport",
+    "city": "Adelaide",
+    "country": "Australia"
+  },
+  {
+    "iata": "KIX",
+    "icao": "RJBB",
+    "name": "Kansai International Airport",
+    "city": "Osaka",
+    "country": "Japan"
+  },
+  {
+    "iata": "NRT",
+    "icao": "RJAA",
+    "name": "Narita International Airport",
+    "city": "Tokyo",
+    "country": "Japan"
+  },
+  {
+    "iata": "TPE",
+    "icao": "RCTP",
+    "name": "Taiwan Taoyuan International Airport",
+    "city": "Taipei",
+    "country": "Taiwan"
+  },
+  {
+    "iata": "BNE",
+    "icao": "YBBN",
+    "name": "Brisbane Airport",
+    "city": "Brisbane",
+    "country": "Australia"
+  },
+  {
+    "iata": "SJC",
+    "icao": "KSJC",
+    "name": "San Jose International Airport",
+    "city": "San Jose",
+    "country": "United States"
+  },
+  {
+    "iata": "VKO",
+    "icao": "UUWW",
+    "name": "Vnukovo International Airport",
+    "city": "Moscow",
+    "country": "Russia"
+  },
+  {
+    "iata": "LIS",
+    "icao": "LPPT",
+    "name": "Humberto Delgado Airport",
+    "city": "Lisbon",
+    "country": "Portugal"
+  },
+  {
+    "iata": "PRG",
+    "icao": "LKPR",
+    "name": "Václav Havel Airport Prague",
+    "city": "Prague",
+    "country": "Czechia"
+  },
+  {
+    "iata": "WAW",
+    "icao": "EPWA",
+    "name": "Warsaw Chopin Airport",
+    "city": "Warsaw",
+    "country": "Poland"
+  },
+  {
+    "iata": "ATH",
+    "icao": "LGAV",
+    "name": "Athens International Airport",
+    "city": "Athens",
+    "country": "Greece"
+  },
+  {
+    "iata": "IST",
+    "icao": "LTFM",
+    "name": "Istanbul Airport",
+    "city": "Istanbul",
+    "country": "Turkey"
+  },
+  {
+    "iata": "SAW",
+    "icao": "LTFJ",
+    "name": "Sabiha Gökçen International Airport",
+    "city": "Istanbul",
+    "country": "Turkey"
+  },
+  {
+    "iata": "RUH",
+    "icao": "OERK",
+    "name": "King Khalid International Airport",
+    "city": "Riyadh",
+    "country": "Saudi Arabia"
+  },
+  {
+    "iata": "JED",
+    "icao": "OEJN",
+    "name": "King Abdulaziz International Airport",
+    "city": "Jeddah",
+    "country": "Saudi Arabia"
+  },
+  {
+    "iata": "CMN",
+    "icao": "GMMN",
+    "name": "Mohammed V International Airport",
+    "city": "Casablanca",
+    "country": "Morocco"
+  },
+  {
+    "iata": "TUN",
+    "icao": "DTTA",
+    "name": "Tunis–Carthage International Airport",
+    "city": "Tunis",
+    "country": "Tunisia"
+  },
+  {
+    "iata": "CAI",
+    "icao": "HECA",
+    "name": "Cairo International Airport",
+    "city": "Cairo",
+    "country": "Egypt"
+  },
+  {
+    "iata": "LOS",
+    "icao": "DNMM",
+    "name": "Murtala Muhammed International Airport",
+    "city": "Lagos",
+    "country": "Nigeria"
+  },
+  {
+    "iata": "NBO",
+    "icao": "HKJK",
+    "name": "Jomo Kenyatta International Airport",
+    "city": "Nairobi",
+    "country": "Kenya"
+  },
+  {
+    "iata": "ADD",
+    "icao": "HAAB",
+    "name": "Addis Ababa Bole International Airport",
+    "city": "Addis Ababa",
+    "country": "Ethiopia"
+  },
+  {
+    "iata": "KWI",
+    "icao": "OKBK",
+    "name": "Kuwait International Airport",
+    "city": "Kuwait City",
+    "country": "Kuwait"
+  },
+  {
+    "iata": "AMM",
+    "icao": "OJAI",
+    "name": "Queen Alia International Airport",
+    "city": "Amman",
+    "country": "Jordan"
+  },
+  {
+    "iata": "MCT",
+    "icao": "OOMS",
+    "name": "Muscat International Airport",
+    "city": "Muscat",
+    "country": "Oman"
+  },
+  {
+    "iata": "LHE",
+    "icao": "OPLA",
+    "name": "Allama Iqbal International Airport",
+    "city": "Lahore",
+    "country": "Pakistan"
+  },
+  {
+    "iata": "ISB",
+    "icao": "OPIS",
+    "name": "Islamabad International Airport",
+    "city": "Islamabad",
+    "country": "Pakistan"
+  },
+  {
+    "iata": "DAC",
+    "icao": "VGHS",
+    "name": "Hazrat Shahjalal International Airport",
+    "city": "Dhaka",
+    "country": "Bangladesh"
+  },
+  {
+    "iata": "COK",
+    "icao": "VOCI",
+    "name": "Cochin International Airport",
+    "city": "Kochi",
+    "country": "India"
+  },
+  {
+    "iata": "BLR",
+    "icao": "VOBL",
+    "name": "Kempegowda International Airport",
+    "city": "Bengaluru",
+    "country": "India"
+  },
+  {
+    "iata": "MAA",
+    "icao": "VOMM",
+    "name": "Chennai International Airport",
+    "city": "Chennai",
+    "country": "India"
+  },
+  {
+    "iata": "CCU",
+    "icao": "VECC",
+    "name": "Netaji Subhas Chandra Bose International Airport",
+    "city": "Kolkata",
+    "country": "India"
+  },
+  {
+    "iata": "SGN",
+    "icao": "VVTS",
+    "name": "Tan Son Nhat International Airport",
+    "city": "Ho Chi Minh City",
+    "country": "Vietnam"
+  },
+  {
+    "iata": "HAN",
+    "icao": "VVNB",
+    "name": "Noi Bai International Airport",
+    "city": "Hanoi",
+    "country": "Vietnam"
+  },
+  {
+    "iata": "HYD",
+    "icao": "VOHS",
+    "name": "Rajiv Gandhi International Airport",
+    "city": "Hyderabad",
+    "country": "India"
+  },
+  {
+    "iata": "GOI",
+    "icao": "VOGO",
+    "name": "Goa International Airport (Dabolim)",
+    "city": "Goa",
+    "country": "India"
+  },
+  {
+    "iata": "PNQ",
+    "icao": "VAPO",
+    "name": "Pune International Airport",
+    "city": "Pune",
+    "country": "India"
+  },
+  {
+    "iata": "AMD",
+    "icao": "VAAH",
+    "name": "Sardar Vallabhbhai Patel International Airport",
+    "city": "Ahmedabad",
+    "country": "India"
+  },
+  {
+    "iata": "NAG",
+    "icao": "VANP",
+    "name": "Dr. Babasaheb Ambedkar International Airport",
+    "city": "Nagpur",
+    "country": "India"
+  },
+  {
+    "iata": "VNS",
+    "icao": "VIBN",
+    "name": "Lal Bahadur Shastri International Airport",
+    "city": "Varanasi",
+    "country": "India"
+  },
+  {
+    "iata": "PAT",
+    "icao": "VEPT",
+    "name": "Jay Prakash Narayan International Airport",
+    "city": "Patna",
+    "country": "India"
+  },
+  {
+    "iata": "RPR",
+    "icao": "VARP",
+    "name": "Swami Vivekananda Airport",
+    "city": "Raipur",
+    "country": "India"
+  },
+  {
+    "iata": "IXC",
+    "icao": "VICG",
+    "name": "Chandigarh International Airport",
+    "city": "Chandigarh",
+    "country": "India"
+  },
+  {
+    "iata": "IXJ",
+    "icao": "VIJU",
+    "name": "Jammu Airport",
+    "city": "Jammu",
+    "country": "India"
+  },
+  {
+    "iata": "SXR",
+    "icao": "VISR",
+    "name": "Sheikh ul-Alam International Airport",
+    "city": "Srinagar",
+    "country": "India"
+  },
+  {
+    "iata": "DED",
+    "icao": "VIDN",
+    "name": "Jolly Grant Airport",
+    "city": "Dehradun",
+    "country": "India"
+  },
+  {
+    "iata": "IXL",
+    "icao": "VILH",
+    "name": "Kushok Bakula Rimpochee Airport",
+    "city": "Leh",
+    "country": "India"
+  },
+  {
+    "iata": "IMF",
+    "icao": "VEIM",
+    "name": "Imphal International Airport",
+    "city": "Imphal",
+    "country": "India"
+  },
+  {
+    "iata": "IXA",
+    "icao": "VEAT",
+    "name": "Maharaja Bir Bikram Airport",
+    "city": "Agartala",
+    "country": "India"
+  },
+  {
+    "iata": "GAU",
+    "icao": "VEGT",
+    "name": "Lokpriya Gopinath Bordoloi International Airport",
+    "city": "Guwahati",
+    "country": "India"
+  },
+  {
+    "iata": "IXB",
+    "icao": "VEBD",
+    "name": "Bagdogra International Airport",
+    "city": "Siliguri",
+    "country": "India"
+  },
+  {
+    "iata": "IXE",
+    "icao": "VOML",
+    "name": "Mangalore International Airport",
+    "city": "Mangalore",
+    "country": "India"
+  },
+  {
+    "iata": "CJB",
+    "icao": "VOCB",
+    "name": "Coimbatore International Airport",
+    "city": "Coimbatore",
+    "country": "India"
+  },
+  {
+    "iata": "TRV",
+    "icao": "VOTV",
+    "name": "Trivandrum International Airport",
+    "city": "Thiruvananthapuram",
+    "country": "India"
+  },
+  {
+    "iata": "IXM",
+    "icao": "VOMD",
+    "name": "Madurai Airport",
+    "city": "Madurai",
+    "country": "India"
+  },
+  {
+    "iata": "TIR",
+    "icao": "VOTP",
+    "name": "Tirupati Airport",
+    "city": "Tirupati",
+    "country": "India"
+  },
+  {
+    "iata": "BBI",
+    "icao": "VEBS",
+    "name": "Biju Patnaik International Airport",
+    "city": "Bhubaneswar",
+    "country": "India"
+  },
+  {
+    "iata": "RJA",
+    "icao": "VORY",
+    "name": "Rajahmundry Airport",
+    "city": "Rajahmundry",
+    "country": "India"
+  },
+  {
+    "iata": "VGA",
+    "icao": "VOBZ",
+    "name": "Vijayawada International Airport",
+    "city": "Vijayawada",
+    "country": "India"
+  },
+  {
+    "iata": "VTZ",
+    "icao": "VEVZ",
+    "name": "Visakhapatnam Airport",
+    "city": "Visakhapatnam",
+    "country": "India"
+  },
+  {
+    "iata": "IXR",
+    "icao": "VERC",
+    "name": "Birsa Munda Airport",
+    "city": "Ranchi",
+    "country": "India"
+  },
+  {
+    "iata": "BDQ",
+    "icao": "VABO",
+    "name": "Vadodara Airport",
+    "city": "Vadodara",
+    "country": "India"
+  },
+  {
+    "iata": "JAI",
+    "icao": "VIJP",
+    "name": "Jaipur International Airport",
+    "city": "Jaipur",
+    "country": "India"
+  },
+  {
+    "iata": "UDR",
+    "icao": "VAUD",
+    "name": "Maharana Pratap Airport",
+    "city": "Udaipur",
+    "country": "India"
+  },
+  {
+    "iata": "HYD",
+    "icao": "VOHS",
+    "name": "Rajiv Gandhi International Airport",
+    "city": "Hyderabad",
+    "country": "India"
+  },
+  {
+    "iata": "GOI",
+    "icao": "VOGO",
+    "name": "Goa International Airport (Dabolim)",
+    "city": "Goa",
+    "country": "India"
+  },
+  {
+    "iata": "PNQ",
+    "icao": "VAPO",
+    "name": "Pune International Airport",
+    "city": "Pune",
+    "country": "India"
+  },
+  {
+    "iata": "AMD",
+    "icao": "VAAH",
+    "name": "Sardar Vallabhbhai Patel International Airport",
+    "city": "Ahmedabad",
+    "country": "India"
+  },
+  {
+    "iata": "NAG",
+    "icao": "VANP",
+    "name": "Dr. Babasaheb Ambedkar International Airport",
+    "city": "Nagpur",
+    "country": "India"
+  },
+  {
+    "iata": "VNS",
+    "icao": "VIBN",
+    "name": "Lal Bahadur Shastri International Airport",
+    "city": "Varanasi",
+    "country": "India"
+  },
+  {
+    "iata": "PAT",
+    "icao": "VEPT",
+    "name": "Jay Prakash Narayan International Airport",
+    "city": "Patna",
+    "country": "India"
+  },
+  {
+    "iata": "RPR",
+    "icao": "VARP",
+    "name": "Swami Vivekananda Airport",
+    "city": "Raipur",
+    "country": "India"
+  },
+  {
+    "iata": "IXC",
+    "icao": "VICG",
+    "name": "Chandigarh International Airport",
+    "city": "Chandigarh",
+    "country": "India"
+  },
+  {
+    "iata": "IXJ",
+    "icao": "VIJU",
+    "name": "Jammu Airport",
+    "city": "Jammu",
+    "country": "India"
+  },
+  {
+    "iata": "SXR",
+    "icao": "VISR",
+    "name": "Sheikh ul-Alam International Airport",
+    "city": "Srinagar",
+    "country": "India"
+  },
+  {
+    "iata": "DED",
+    "icao": "VIDN",
+    "name": "Jolly Grant Airport",
+    "city": "Dehradun",
+    "country": "India"
+  },
+  {
+    "iata": "IXL",
+    "icao": "VILH",
+    "name": "Kushok Bakula Rimpochee Airport",
+    "city": "Leh",
+    "country": "India"
+  },
+  {
+    "iata": "IMF",
+    "icao": "VEIM",
+    "name": "Imphal International Airport",
+    "city": "Imphal",
+    "country": "India"
+  },
+  {
+    "iata": "IXA",
+    "icao": "VEAT",
+    "name": "Maharaja Bir Bikram Airport",
+    "city": "Agartala",
+    "country": "India"
+  },
+  {
+    "iata": "GAU",
+    "icao": "VEGT",
+    "name": "Lokpriya Gopinath Bordoloi International Airport",
+    "city": "Guwahati",
+    "country": "India"
+  },
+  {
+    "iata": "IXB",
+    "icao": "VEBD",
+    "name": "Bagdogra International Airport",
+    "city": "Siliguri",
+    "country": "India"
+  },
+  {
+    "iata": "IXE",
+    "icao": "VOML",
+    "name": "Mangalore International Airport",
+    "city": "Mangalore",
+    "country": "India"
+  },
+  {
+    "iata": "CJB",
+    "icao": "VOCB",
+    "name": "Coimbatore International Airport",
+    "city": "Coimbatore",
+    "country": "India"
+  },
+  {
+    "iata": "TRV",
+    "icao": "VOTV",
+    "name": "Trivandrum International Airport",
+    "city": "Thiruvananthapuram",
+    "country": "India"
+  },
+  {
+    "iata": "IXM",
+    "icao": "VOMD",
+    "name": "Madurai Airport",
+    "city": "Madurai",
+    "country": "India"
+  },
+  {
+    "iata": "TIR",
+    "icao": "VOTP",
+    "name": "Tirupati Airport",
+    "city": "Tirupati",
+    "country": "India"
+  },
+  {
+    "iata": "BBI",
+    "icao": "VEBS",
+    "name": "Biju Patnaik International Airport",
+    "city": "Bhubaneswar",
+    "country": "India"
+  },
+  {
+    "iata": "RJA",
+    "icao": "VORY",
+    "name": "Rajahmundry Airport",
+    "city": "Rajahmundry",
+    "country": "India"
+  },
+  {
+    "iata": "VGA",
+    "icao": "VOBZ",
+    "name": "Vijayawada International Airport",
+    "city": "Vijayawada",
+    "country": "India"
+  },
+  {
+    "iata": "VTZ",
+    "icao": "VEVZ",
+    "name": "Visakhapatnam Airport",
+    "city": "Visakhapatnam",
+    "country": "India"
+  },
+  {
+    "iata": "IXR",
+    "icao": "VERC",
+    "name": "Birsa Munda Airport",
+    "city": "Ranchi",
+    "country": "India"
+  },
+  {
+    "iata": "BDQ",
+    "icao": "VABO",
+    "name": "Vadodara Airport",
+    "city": "Vadodara",
+    "country": "India"
+  },
+  {
+    "iata": "JAI",
+    "icao": "VIJP",
+    "name": "Jaipur International Airport",
+    "city": "Jaipur",
+    "country": "India"
+  },
+  {
+    "iata": "UDR",
+    "icao": "VAUD",
+    "name": "Maharana Pratap Airport",
+    "city": "Udaipur",
+    "country": "India"
+  },
+
+  {
+    "iata": "BHO",
+    "icao": "VABP",
+    "name": "Raja Bhoj International Airport",
+    "city": "Bhopal",
+    "country": "India"
+  },
+  {
+    "iata": "IXW",
+    "icao": "VEJS",
+    "name": "Sonari Airport",
+    "city": "Jamshedpur",
+    "country": "India"
+  },
+  {
+    "iata": "IXU",
+    "icao": "VAAU",
+    "name": "Aurangabad Airport",
+    "city": "Aurangabad",
+    "country": "India"
+  },
+  {
+    "iata": "IXG",
+    "icao": "VABM",
+    "name": "Belgaum Airport",
+    "city": "Belagavi",
+    "country": "India"
+  },
+  {
+    "iata": "HBX",
+    "icao": "VAHB",
+    "name": "Hubli Airport",
+    "city": "Hubli",
+    "country": "India"
+  },
+  {
+    "iata": "IXY",
+    "icao": "VAKE",
+    "name": "Kandla Airport",
+    "city": "Kandla",
+    "country": "India"
+  },
+  {
+    "iata": "BHU",
+    "icao": "VABV",
+    "name": "Bhavnagar Airport",
+    "city": "Bhavnagar",
+    "country": "India"
+  },
+  {
+    "iata": "JLR",
+    "icao": "VAJB",
+    "name": "Jabalpur Airport",
+    "city": "Jabalpur",
+    "country": "India"
+  },
+  {
+    "iata": "IXD",
+    "icao": "VIAL",
+    "name": "Prayagraj Airport",
+    "city": "Prayagraj",
+    "country": "India"
+  },
+  {
+    "iata": "LKO",
+    "icao": "VILK",
+    "name": "Chaudhary Charan Singh International Airport",
+    "city": "Lucknow",
+    "country": "India"
+  },
+  {
+    "iata": "RAJ",
+    "icao": "VARK",
+    "name": "Rajkot Airport",
+    "city": "Rajkot",
+    "country": "India"
+  },
+  {
+    "iata": "STV",
+    "icao": "VASU",
+    "name": "Surat Airport",
+    "city": "Surat",
+    "country": "India"
+  },
+  {
+    "iata": "IXZ",
+    "icao": "VOPB",
+    "name": "Veer Savarkar International Airport",
+    "city": "Port Blair",
+    "country": "India"
+  },
+  {
+    "iata": "IXS",
+    "icao": "VEKU",
+    "name": "Silchar Airport",
+    "city": "Silchar",
+    "country": "India"
+  },
+  {
+    "iata": "DMU",
+    "icao": "VEMR",
+    "name": "Dimapur Airport",
+    "city": "Dimapur",
+    "country": "India"
+  },
+  {
+    "iata": "SHL",
+    "icao": "VEBI",
+    "name": "Shillong Airport",
+    "city": "Shillong",
+    "country": "India"
+  },
+  {
+    "iata": "DIB",
+    "icao": "VEMN",
+    "name": "Dibrugarh Airport",
+    "city": "Dibrugarh",
+    "country": "India"
+  },
+  {
+    "iata": "TEZ",
+    "icao": "VETZ",
+    "name": "Tezpur Airport",
+    "city": "Tezpur",
+    "country": "India"
+  },
+  {
+    "iata": "IXI",
+    "icao": "VEAN",
+    "name": "Lilabari Airport",
+    "city": "North Lakhimpur",
+    "country": "India"
+  },
+  {
+    "iata": "AJL",
+    "icao": "VEAZ",
+    "name": "Lengpui Airport",
+    "city": "Aizawl",
+    "country": "India"
+  },
+  {
+    "iata": "CCU",
+    "icao": "VECC",
+    "name": "Netaji Subhas Chandra Bose International Airport",
+    "city": "Kolkata",
+    "country": "India"
+  },
+  {
+    "iata": "IXA",
+    "icao": "VEAT",
+    "name": "Maharaja Bir Bikram Airport",
+    "city": "Agartala",
+    "country": "India"
+  },
+  {
+    "iata": "IXC",
+    "icao": "VICG",
+    "name": "Chandigarh International Airport",
+    "city": "Chandigarh",
+    "country": "India"
+  },
+  {
+    "iata": "IXJ",
+    "icao": "VIJU",
+    "name": "Jammu Airport",
+    "city": "Jammu",
+    "country": "India"
+  },
+  {
+    "iata": "SXR",
+    "icao": "VISR",
+    "name": "Sheikh ul-Alam International Airport",
+    "city": "Srinagar",
+    "country": "India"
+  },
+  {
+    "iata": "IXZ",
+    "icao": "VOPB",
+    "name": "Veer Savarkar International Airport",
+    "city": "Port Blair",
+    "country": "India"
+  },
+  {
+    "iata": "IXR",
+    "icao": "VERC",
+    "name": "Birsa Munda Airport",
+    "city": "Ranchi",
+    "country": "India"
+  },
+  {
+    "iata": "GAU",
+    "icao": "VEGT",
+    "name": "Lokpriya Gopinath Bordoloi International Airport",
+    "city": "Guwahati",
+    "country": "India"
+  },
+  {
+    "iata": "BBI",
+    "icao": "VEBS",
+    "name": "Biju Patnaik International Airport",
+    "city": "Bhubaneswar",
+    "country": "India"
+  },
+  {
+    "iata": "TRV",
+    "icao": "VOTV",
+    "name": "Trivandrum International Airport",
+    "city": "Thiruvananthapuram",
+    "country": "India"
+  }
+
+
+]
