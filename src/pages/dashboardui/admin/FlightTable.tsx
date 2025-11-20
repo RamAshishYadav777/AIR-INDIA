@@ -1,5 +1,10 @@
 // src/pages/dashboardui/admin/FlightTable.tsx
 import React, { useEffect, useMemo, useState } from "react";
+import type {
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
+
 import {
   Box,
   Button,
@@ -319,101 +324,175 @@ const FlightTable: React.FC = () => {
   };
 
   // ---------- DataGrid columns ----------
-  const columns = [
-    { field: "flight_number", headerName: "Flight No.", width: 140 },
-    { field: "origin", headerName: "Origin", width: 130 },
-    { field: "destination", headerName: "Destination", width: 130 },
-    {
-      field: "departure_time",
-      headerName: "Departure",
-      width: 220,
-      valueGetter: (params: any) => params.row?.departure_time || null,
+  // const columns = [
+  //   { field: "flight_number", headerName: "Flight No.", width: 140 },
+  //   { field: "origin", headerName: "Origin", width: 130 },
+  //   { field: "destination", headerName: "Destination", width: 130 },
+  //   {
+  //     field: "departure_time",
+  //     headerName: "Departure",
+  //     width: 220,
+  //     valueGetter: (params: any) => params.row?.departure_time || null,
 
-      renderCell: (params: any) => {
-        const v = params.value;
-        if (!v) return "—";
-        const dt = new Date(v);
-        return dt.toLocaleString("en-IN", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-          timeZone: "Asia/Kolkata",
-        });
-      },
-    },
-    {
-      field: "arrival_time",
-      headerName: "Arrival",
-      width: 220,
-      valueGetter: (params: any) => params.row?.arrival_time || null,
+  //     renderCell: (params: any) => {
+  //       const v = params.value;
+  //       if (!v) return "—";
+  //       const dt = new Date(v);
+  //       return dt.toLocaleString("en-IN", {
+  //         year: "numeric",
+  //         month: "short",
+  //         day: "numeric",
+  //         hour: "2-digit",
+  //         minute: "2-digit",
+  //         hour12: true,
+  //         timeZone: "Asia/Kolkata",
+  //       });
+  //     },
+  //   },
+  //   {
+  //     field: "arrival_time",
+  //     headerName: "Arrival",
+  //     width: 220,
+  //     valueGetter: (params: any) => params.row?.arrival_time || null,
 
-      renderCell: (params: any) => {
-        const v = params.value;
-        if (!v) return "—";
-        const dt = new Date(v);
-        return dt.toLocaleString("en-IN", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-          timeZone: "Asia/Kolkata",
-        });
-      },
-    },
-    {
-      field: "price",
-      headerName: "Price (₹)",
-      width: 120,
-      valueFormatter: (params: any) =>
-        params.value ? `₹${params.value}` : "—",
-    },
-    { field: "status", headerName: "Status", width: 130 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 140,
-      sortable: false,
-      filterable: false,
-      renderCell: (params: any) => {
-        const row: FlightRow = params.row;
-        return (
-          <Stack direction="row" spacing={1}>
-            <IconButton
-              size="small"
-              color="primary"
-              onClick={() => openViewBookings(row)}
-              title="View Bookings"
-            >
-              <VisibilityIcon />
-            </IconButton>
+  //     renderCell: (params: any) => {
+  //       const v = params.value;
+  //       if (!v) return "—";
+  //       const dt = new Date(v);
+  //       return dt.toLocaleString("en-IN", {
+  //         year: "numeric",
+  //         month: "short",
+  //         day: "numeric",
+  //         hour: "2-digit",
+  //         minute: "2-digit",
+  //         hour12: true,
+  //         timeZone: "Asia/Kolkata",
+  //       });
+  //     },
+  //   },
+  //   {
+  //     field: "price",
+  //     headerName: "Price (₹)",
+  //     width: 120,
+  //     valueFormatter: (params) =>
+  //       params.value ? `₹${params.value}` : "—",
+  //   },
+  //   { field: "status", headerName: "Status", width: 130 },
+  //   {
+  //     field: "actions",
+  //     headerName: "Actions",
+  //     width: 140,
+  //     sortable: false,
+  //     filterable: false,
+  //     renderCell: (params: any) => {
+  //       const row: FlightRow = params.row;
+        const columns = [
+          { field: "flight_number", headerName: "Flight No.", width: 140 },
+          { field: "origin", headerName: "Origin", width: 130 },
+          { field: "destination", headerName: "Destination", width: 130 },
 
-            <IconButton
-              size="small"
-              color="info"
-              onClick={() => openEdit(row)}
-              title="Edit Flight"
-            >
-              <EditIcon />
-            </IconButton>
+          {
+            field: "departure_time",
+            headerName: "Departure",
+            width: 220,
+            valueGetter: (params: GridValueGetterParams) =>
+              params.row?.departure_time || null,
 
-            <IconButton
-              size="small"
-              color="error"
-              onClick={() => handleDelete(row.id)}
-              title="Delete Flight"
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-        );
-      },
-    },
-  ];
+            renderCell: (params: GridRenderCellParams) => {
+              const v = params.row?.departure_time;
+              if (!v) return "—";
+
+              const dt = new Date(v);
+              return dt.toLocaleString("en-IN", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: "Asia/Kolkata",
+              });
+            },
+          },
+
+          {
+            field: "arrival_time",
+            headerName: "Arrival",
+            width: 220,
+            valueGetter: (params: GridValueGetterParams) =>
+              params.row?.arrival_time || null,
+
+            renderCell: (params: GridRenderCellParams) => {
+              const v = params.row?.arrival_time;
+              if (!v) return "—";
+
+              const dt = new Date(v);
+              return dt.toLocaleString("en-IN", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: "Asia/Kolkata",
+              });
+            },
+          },
+
+          {
+            field: "price",
+            headerName: "Price (₹)",
+            width: 120,
+            renderCell: (params: GridRenderCellParams) => {
+              const v = Number(params.row?.price);
+              return isNaN(v) || v <= 0 ? "—" : `₹${v}`;
+            },
+          },
+
+          { field: "status", headerName: "Status", width: 130 },
+
+          {
+            field: "actions",
+            headerName: "Actions",
+            width: 140,
+            sortable: false,
+            filterable: false,
+            renderCell: (params: GridRenderCellParams) => {
+              const row = params.row as FlightRow;
+
+              return (
+                <Stack direction="row" spacing={1}>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={() => openViewBookings(row)}
+                    title="View Bookings"
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+
+                  <IconButton
+                    size="small"
+                    color="info"
+                    onClick={() => openEdit(row)}
+                    title="Edit Flight"
+                  >
+                    <EditIcon />
+                  </IconButton>
+
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => handleDelete(row.id)}
+                    title="Delete Flight"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Stack>
+              );
+            },
+          },
+        ];
 
   // ---------- Render ----------
   return (
