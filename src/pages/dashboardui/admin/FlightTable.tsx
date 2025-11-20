@@ -327,7 +327,8 @@ const FlightTable: React.FC = () => {
       field: "departure_time",
       headerName: "Departure",
       width: 220,
-      valueGetter: (params: any) => params.row.departure_time,
+      valueGetter: (params: any) => params.row?.departure_time || null,
+
       renderCell: (params: any) => {
         const v = params.value;
         if (!v) return "—";
@@ -347,7 +348,8 @@ const FlightTable: React.FC = () => {
       field: "arrival_time",
       headerName: "Arrival",
       width: 220,
-      valueGetter: (params: any) => params.row.arrival_time,
+      valueGetter: (params: any) => params.row?.arrival_time || null,
+
       renderCell: (params: any) => {
         const v = params.value;
         if (!v) return "—";
@@ -363,7 +365,13 @@ const FlightTable: React.FC = () => {
         });
       },
     },
-    { field: "price", headerName: "Price (₹)", width: 120, valueFormatter: (params: any) => params.value ? `₹${params.value}` : "—" },
+    {
+      field: "price",
+      headerName: "Price (₹)",
+      width: 120,
+      valueFormatter: (params: any) =>
+        params.value ? `₹${params.value}` : "—",
+    },
     { field: "status", headerName: "Status", width: 130 },
     {
       field: "actions",
@@ -375,15 +383,30 @@ const FlightTable: React.FC = () => {
         const row: FlightRow = params.row;
         return (
           <Stack direction="row" spacing={1}>
-            <IconButton size="small" color="primary" onClick={() => openViewBookings(row)} title="View Bookings">
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={() => openViewBookings(row)}
+              title="View Bookings"
+            >
               <VisibilityIcon />
             </IconButton>
 
-            <IconButton size="small" color="info" onClick={() => openEdit(row)} title="Edit Flight">
+            <IconButton
+              size="small"
+              color="info"
+              onClick={() => openEdit(row)}
+              title="Edit Flight"
+            >
               <EditIcon />
             </IconButton>
 
-            <IconButton size="small" color="error" onClick={() => handleDelete(row.id)} title="Delete Flight">
+            <IconButton
+              size="small"
+              color="error"
+              onClick={() => handleDelete(row.id)}
+              title="Delete Flight"
+            >
               <DeleteIcon />
             </IconButton>
           </Stack>
