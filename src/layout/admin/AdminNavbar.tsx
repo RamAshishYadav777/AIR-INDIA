@@ -1,25 +1,31 @@
-import React from "react";
+// import {
+//   AppBar,
+//   Toolbar,
+//   Typography,
+//   // IconButton,
+//   Button,
+//   Box,
+//   Avatar,
+// } from "@mui/material";
 import {
   AppBar,
   Toolbar,
   Typography,
-  IconButton,
   Button,
   Box,
   Avatar,
 } from "@mui/material";
 import logo from "../../assets/logo.png";
-import MenuIcon from "@mui/icons-material/Menu";
+// import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/hooks";
 import { logoutUser } from "../../hooks/redux/slices/authSlice";
 import { supabase } from "../../lib/supabase";
 
 interface AdminNavbarProps {
-  toggleDrawer: () => void;
 }
 
-const AdminNavbar: React.FC<AdminNavbarProps> = ({ toggleDrawer }) => {
+const AdminNavbar: React.FC<AdminNavbarProps> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
@@ -27,7 +33,7 @@ const AdminNavbar: React.FC<AdminNavbarProps> = ({ toggleDrawer }) => {
   // 🟡 Admin Name Fix
   const adminName =
     user?.fullName ||
-    
+
     user?.email?.split("@")[0] ||
     "Admin";
 
@@ -54,9 +60,10 @@ const AdminNavbar: React.FC<AdminNavbarProps> = ({ toggleDrawer }) => {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* ================= LEFT SECTION ================= */}
         <Box display="flex" alignItems="center" gap={2}>
-          <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
+          {/* Hamburger Menu removed as requested */}
+          {/* <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
             <MenuIcon sx={{ color: "#FFD700" }} />
-          </IconButton>
+          </IconButton> */}
 
           <Box sx={{ display: "flex", alignItems: "center", position: "relative" }}>
             {/* Moving shimmer */}

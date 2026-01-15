@@ -188,7 +188,7 @@ const AdminSignup: React.FC = () => {
             { label: "Email", type: "email", value: email, setter: setEmail },
             { label: "Password", type: "password", value: password, setter: setPassword },
             { label: "Confirm Password", type: "password", value: confirmPassword, setter: setConfirmPassword },
-            { label: "Admin Secret Key", type: "password", value: adminSecret, setter: setAdminSecret },
+            { label: "Admin Secret Key is 123", type: "password", value: adminSecret, setter: setAdminSecret },
           ].map((field, i) => (
             <TextField
               key={i}

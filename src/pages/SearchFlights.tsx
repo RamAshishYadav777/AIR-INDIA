@@ -123,9 +123,9 @@ const SearchFlights: React.FC = () => {
     try {
       let query: any = supabase.from("flights").select("*");
 
-       query = query.eq("origin", origin.toUpperCase());
-      
-        query = query.eq("destination", destination.toUpperCase());
+      query = query.eq("origin", origin.toUpperCase());
+
+      query = query.eq("destination", destination.toUpperCase());
 
 
 
@@ -318,6 +318,34 @@ const SearchFlights: React.FC = () => {
               justifyContent: "center",
             }}
           >
+            {/* Trip Type Toggle (Inline) */}
+            <Box sx={{ width: "100%", mb: 2, display: "flex", justifyContent: "center" }}>
+              <ToggleButtonGroup
+                value={tripType}
+                exclusive
+                onChange={(_, v) => v && setTripType(v)}
+                sx={{
+                  bgcolor: "rgba(255,255,255,0.05)",
+                  borderRadius: 2,
+                  "& .MuiToggleButton-root": {
+                    color: "#d0c9b0",
+                    border: "1px solid rgba(255,215,0,0.15)",
+                    px: 3,
+                    "&.Mui-selected": {
+                      bgcolor: "#FFD700",
+                      color: "#000",
+                      fontWeight: 700,
+                      "&:hover": { bgcolor: "#ffdd57" },
+                    },
+                    "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
+                  },
+                }}
+              >
+                <ToggleButton value="oneway">One Way</ToggleButton>
+                <ToggleButton value="roundtrip">Round Trip</ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+
             {/* Origin */}
             <Box
               sx={{
@@ -406,7 +434,7 @@ const SearchFlights: React.FC = () => {
                 options={filteredAirports}
                 getOptionLabel={(option) => option.label}
                 onChange={(_, v) =>
-                  setDestination(v ? v.iata: "")
+                  setDestination(v ? v.iata : "")
                 }
                 renderInput={(params) => (
                   <TextField
@@ -524,83 +552,143 @@ const SearchFlights: React.FC = () => {
           <CircularProgress sx={{ color: "#FFD700" }} />
         </Box>
       ) : flights.length > 0 ? (
-        <Card
-          sx={{
-            width: "100%",
-            maxWidth: 1200,
-            borderRadius: 3,
-            p: 0,
-            zIndex: 2,
-            background: "rgba(18,18,18,0.72)",
-            border: "1px solid rgba(255,215,0,0.06)",
-            boxShadow: "0 12px 30px rgba(0,0,0,0.6)",
-          }}
-        >
-          <CardContent>
-            <Table>
-              <TableHead>
-                <TableRow
-                  sx={{ background: "linear-gradient(90deg,#9B111E,#5a060a)" }}
-                >
-                  {[
-                    "Flight No.",
-                    "Origin",
-                    "Destination",
-                    "Departure",
-                    "Arrival",
-                    "Price",
-                    "Action",
-                  ].map((h, i) => (
-                    <TableCell key={i} sx={{ color: "#fff", fontWeight: 700 }}>
-                      {h}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
+        <>
+          {/* Desktop Table View */}
+          <Box sx={{ display: { xs: "none", md: "block" }, width: "100%", maxWidth: 1200, zIndex: 2 }}>
+            <Card
+              sx={{
+                width: "100%",
+                borderRadius: 3,
+                p: 0,
+                background: "rgba(18,18,18,0.72)",
+                border: "1px solid rgba(255,215,0,0.06)",
+                boxShadow: "0 12px 30px rgba(0,0,0,0.6)",
+              }}
+            >
+              <CardContent>
+                <Table>
+                  <TableHead>
+                    <TableRow
+                      sx={{ background: "linear-gradient(90deg,#9B111E,#5a060a)" }}
+                    >
+                      {[
+                        "Flight No.",
+                        "Origin",
+                        "Destination",
+                        "Departure",
+                        "Arrival",
+                        "Price",
+                        "Action",
+                      ].map((h, i) => (
+                        <TableCell key={i} sx={{ color: "#fff", fontWeight: 700 }}>
+                          {h}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
 
-              <TableBody>
-                {flights.map((f) => (
-                  <TableRow
-                    key={f.id}
-                    hover
-                    sx={{ "&:hover": { background: "rgba(255,215,0,0.03)" } }}
-                  >
-                    <TableCell sx={{ color: "#fff" }}>
-                      {f.flight_number}
-                    </TableCell>
-                    <TableCell sx={{ color: "#fff" }}>{f.origin}</TableCell>
-                    <TableCell sx={{ color: "#fff" }}>
-                      {f.destination}
-                    </TableCell>
-                    <TableCell sx={{ color: "#fff" }}>
-                      {new Date(f.departure_time).toLocaleString()}
-                    </TableCell>
-                    <TableCell sx={{ color: "#fff" }}>
-                      {new Date(f.arrival_time).toLocaleString()}
-                    </TableCell>
-                    <TableCell sx={{ color: "#FFD700", fontWeight: 700 }}>
-                      ₹{f.price}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        onClick={() => handleBookFlight(f.id)}
-                        sx={{
-                          bgcolor: "#FFD700",
-                          color: "#000",
-                          "&:hover": { bgcolor: "#f2c500" },
-                        }}
+                  <TableBody>
+                    {flights.map((f) => (
+                      <TableRow
+                        key={f.id}
+                        hover
+                        sx={{ "&:hover": { background: "rgba(255,215,0,0.03)" } }}
                       >
-                        Book
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                        <TableCell sx={{ color: "#fff" }}>
+                          {f.flight_number}
+                        </TableCell>
+                        <TableCell sx={{ color: "#fff" }}>{f.origin}</TableCell>
+                        <TableCell sx={{ color: "#fff" }}>
+                          {f.destination}
+                        </TableCell>
+                        <TableCell sx={{ color: "#fff" }}>
+                          {new Date(f.departure_time).toLocaleString()}
+                        </TableCell>
+                        <TableCell sx={{ color: "#fff" }}>
+                          {new Date(f.arrival_time).toLocaleString()}
+                        </TableCell>
+                        <TableCell sx={{ color: "#FFD700", fontWeight: 700 }}>
+                          ₹{f.price}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            onClick={() => handleBookFlight(f.id)}
+                            sx={{
+                              bgcolor: "#FFD700",
+                              color: "#000",
+                              "&:hover": { bgcolor: "#f2c500" },
+                            }}
+                          >
+                            Book
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </Box>
+
+          {/* Mobile Card View */}
+          <Box sx={{ display: { xs: "block", md: "none" }, width: "100%", zIndex: 2 }}>
+            <Stack spacing={2}>
+              {flights.map((f) => (
+                <Card
+                  key={f.id}
+                  sx={{
+                    background: "rgba(30,30,30,0.8)",
+                    border: "1px solid rgba(255,215,0,0.1)",
+                    borderRadius: 3,
+                    p: 2,
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <Box display="flex" justifyContent="space-between" mb={1}>
+                    <Typography variant="h6" color="#FFD700" fontWeight={700}>
+                      {f.flight_number}
+                    </Typography>
+                    <Typography variant="h6" color="#fff" fontWeight={700}>
+                      ₹{f.price}
+                    </Typography>
+                  </Box>
+
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Box>
+                      <Typography variant="h5" color="#fff" fontWeight={700}>{f.origin}</Typography>
+                      <Typography variant="caption" color="gray">{new Date(f.departure_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Typography>
+                    </Box>
+                    <Box display="flex" flexDirection="column" alignItems="center" px={1}>
+                      <Typography variant="caption" color="gray">Duration</Typography>
+                      <Divider sx={{ width: 40, borderColor: "#FFD700", my: 0.5 }} />
+                      <Typography variant="caption" color="#FFD700">Non-stop</Typography>
+                    </Box>
+                    <Box textAlign="right">
+                      <Typography variant="h5" color="#fff" fontWeight={700}>{f.destination}</Typography>
+                      <Typography variant="caption" color="gray">{new Date(f.arrival_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Typography>
+                    </Box>
+                  </Box>
+
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={() => handleBookFlight(f.id)}
+                    sx={{
+                      bgcolor: "#FFD700",
+                      color: "#000",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "#f2c500" },
+                    }}
+                  >
+                    Book Flight
+                  </Button>
+                </Card>
+              ))}
+            </Stack>
+          </Box>
+        </>
       ) : (
         <Typography
           textAlign="center"
@@ -612,44 +700,6 @@ const SearchFlights: React.FC = () => {
         </Typography>
       )}
 
-      {/* Trip type toggles placed at bottom-right floating like admin controls */}
-      <Box
-        sx={{
-          position: "fixed",
-          right: 20,
-          bottom: 24,
-          zIndex: 3,
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          background: "rgba(0,0,0,0.45)",
-          border: "1px solid rgba(255,215,0,0.06)",
-          backdropFilter: "blur(6px)",
-          p: 1,
-          borderRadius: 2,
-        }}
-      >
-        <ToggleButtonGroup
-          value={tripType}
-          exclusive
-          onChange={(_, v) => v && setTripType(v)}
-          sx={{
-            "& .MuiToggleButton-root": {
-              color: "#FFD700",
-              borderColor: "rgba(255,215,0,0.08)",
-              "&.Mui-selected": {
-                bgcolor: "#FFD700",
-                color: "#000",
-                fontWeight: 700,
-              },
-              "&:hover": { bgcolor: "rgba(155,17,30,0.14)", color: "#fff" },
-            },
-          }}
-        >
-          <ToggleButton value="oneway">One Way</ToggleButton>
-          <ToggleButton value="roundtrip">Round Trip</ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
     </Box>
   );
 };

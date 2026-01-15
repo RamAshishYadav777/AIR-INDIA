@@ -28,13 +28,22 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f5f5" }}>
       {/* Top Navbar */}
-      <AdminNavbar toggleDrawer={toggleDrawer} />
+      <AdminNavbar />
 
       {/* Sidebar */}
       <AdminSidebar open={drawerOpen} onClose={toggleDrawer} />
 
       {/* Main Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { md: drawerOpen ? `calc(100% - 240px)` : `calc(100% - 80px)` },
+          ml: { md: drawerOpen ? "240px" : "80px" },
+          transition: "margin 0.3s ease, width 0.3s ease",
+        }}
+      >
         <Toolbar /> {/* Spacing below navbar */}
         {children}
       </Box>

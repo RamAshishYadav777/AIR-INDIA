@@ -58,7 +58,11 @@ interface FlightRow {
   status: string;
 }
 
-const FlightTable: React.FC = () => {
+interface FlightTableProps {
+  showTitle?: boolean;
+}
+
+const FlightTable: React.FC<FlightTableProps> = ({ showTitle = true }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { list: flights, loading } = useSelector(
     (state: RootState) => state.flights
@@ -385,178 +389,204 @@ const FlightTable: React.FC = () => {
   //     filterable: false,
   //     renderCell: (params: any) => {
   //       const row: FlightRow = params.row;
-       const columns = [
-         { field: "flight_number", headerName: "Flight No.", width: 140 },
-         { field: "origin", headerName: "Origin", width: 130 },
-         { field: "destination", headerName: "Destination", width: 130 },
+  const columns = [
+    { field: "flight_number", headerName: "Flight No.", width: 140 },
+    { field: "origin", headerName: "Origin", width: 130 },
+    { field: "destination", headerName: "Destination", width: 130 },
 
-         {
-           field: "departure_time",
-           headerName: "Departure",
-           width: 220,
-           renderCell: (params: GridRenderCellParams) => {
-             const v = params.row?.departure_time;
-             if (!v) return "—";
-             const dt = new Date(v);
-             return dt.toLocaleString("en-IN", {
-               year: "numeric",
-               month: "short",
-               day: "numeric",
-               hour: "2-digit",
-               minute: "2-digit",
-               hour12: true,
-               timeZone: "Asia/Kolkata",
-             });
-           },
-         },
+    {
+      field: "departure_time",
+      headerName: "Departure",
+      width: 220,
+      renderCell: (params: GridRenderCellParams) => {
+        const v = params.row?.departure_time;
+        if (!v) return "—";
+        const dt = new Date(v);
+        return dt.toLocaleString("en-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+          timeZone: "Asia/Kolkata",
+        });
+      },
+    },
 
-         {
-           field: "arrival_time",
-           headerName: "Arrival",
-           width: 220,
-           renderCell: (params: GridRenderCellParams) => {
-             const v = params.row?.arrival_time;
-             if (!v) return "—";
-             const dt = new Date(v);
-             return dt.toLocaleString("en-IN", {
-               year: "numeric",
-               month: "short",
-               day: "numeric",
-               hour: "2-digit",
-               minute: "2-digit",
-               hour12: true,
-               timeZone: "Asia/Kolkata",
-             });
-           },
-         },
+    {
+      field: "arrival_time",
+      headerName: "Arrival",
+      width: 220,
+      renderCell: (params: GridRenderCellParams) => {
+        const v = params.row?.arrival_time;
+        if (!v) return "—";
+        const dt = new Date(v);
+        return dt.toLocaleString("en-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+          timeZone: "Asia/Kolkata",
+        });
+      },
+    },
 
-         {
-           field: "price",
-           headerName: "Price (₹)",
-           width: 120,
-           renderCell: (params: GridRenderCellParams) => {
-             const v = Number(params.row?.price);
-             return isNaN(v) || v <= 0 ? "—" : `₹${v}`;
-           },
-         },
+    {
+      field: "price",
+      headerName: "Price (₹)",
+      width: 120,
+      renderCell: (params: GridRenderCellParams) => {
+        const v = Number(params.row?.price);
+        return isNaN(v) || v <= 0 ? "—" : `₹${v}`;
+      },
+    },
 
-         { field: "status", headerName: "Status", width: 130 },
+    { field: "status", headerName: "Status", width: 130 },
 
-         {
-           field: "actions",
-           headerName: "Actions",
-           width: 140,
-           sortable: false,
-           filterable: false,
-           renderCell: (params: GridRenderCellParams) => {
-             const row = params.row as FlightRow;
-             return (
-               <Stack direction="row" spacing={1}>
-                 <IconButton
-                   size="small"
-                   color="primary"
-                   onClick={() => openViewBookings(row)}
-                 >
-                   <VisibilityIcon />
-                 </IconButton>
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 140,
+      sortable: false,
+      filterable: false,
+      renderCell: (params: GridRenderCellParams) => {
+        const row = params.row as FlightRow;
+        return (
+          <Stack direction="row" spacing={1}>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={() => openViewBookings(row)}
+            >
+              <VisibilityIcon />
+            </IconButton>
 
-                 <IconButton
-                   size="small"
-                   color="info"
-                   onClick={() => openEdit(row)}
-                 >
-                   <EditIcon />
-                 </IconButton>
+            <IconButton
+              size="small"
+              color="info"
+              onClick={() => openEdit(row)}
+            >
+              <EditIcon />
+            </IconButton>
 
-                 <IconButton
-                   size="small"
-                   color="error"
-                   onClick={() => handleDelete(row.id)}
-                 >
-                   <DeleteIcon />
-                 </IconButton>
-               </Stack>
-             );
-           },
-         },
-       ];
+            <IconButton
+              size="small"
+              color="error"
+              onClick={() => handleDelete(row.id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Stack>
+        );
+      },
+    },
+  ];
 
 
   // ---------- Render ----------
   return (
-    <Paper sx={{ p: 2 }}>
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        alignItems="center"
-        justifyContent="space-between"
-        spacing={2}
-        mb={2}
-      >
-        <Typography variant="h6">✈️ Flights</Typography>
-
-        <Box display="flex" gap={1} alignItems="center" flexWrap="wrap">
-          <TextField
-            size="small"
-            placeholder="Search flight / origin / dest"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Origin</InputLabel>
-            <Select
-              label="Origin"
-              value={filterOrigin}
-              onChange={(e) => setFilterOrigin(e.target.value)}
-            >
-              <MenuItem value="">All</MenuItem>
-              {origins.map((o) => (
-                <MenuItem key={o} value={o}>
-                  {o}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl size="small" sx={{ minWidth: 140 }}>
-            <InputLabel>Destination</InputLabel>
-            <Select
-              label="Destination"
-              value={filterDestination}
-              onChange={(e) => setFilterDestination(e.target.value)}
-            >
-              <MenuItem value="">All</MenuItem>
-              {destinations.map((d) => (
-                <MenuItem key={d} value={d}>
-                  {d}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Status</InputLabel>
-            <Select
-              label="Status"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="On Time">On Time</MenuItem>
-              <MenuItem value="Delayed">Delayed</MenuItem>
-              <MenuItem value="Cancelled">Cancelled</MenuItem>
-            </Select>
-          </FormControl>
-
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={openAdd}
-            sx={{ ml: 1 }}
-          >
-            Add Flight
-          </Button>
+    <Box sx={{ p: 2 }}>
+      {showTitle && (
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+          <Typography variant="h4" fontWeight="bold" sx={{ color: "#333" }}>
+            ✈️ Flight Management
+          </Typography>
         </Box>
-      </Stack>
+      )}
+
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          mb: 3,
+          borderRadius: 4,
+          border: "1px solid #eee",
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
+        <Typography variant="subtitle2" fontWeight="bold" color="text.secondary">
+          Filters:
+        </Typography>
+        <TextField
+          size="small"
+          placeholder="Search flight / origin / dest"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          sx={{ minWidth: 200 }}
+          InputProps={{ sx: { borderRadius: 3 } }}
+        />
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Origin</InputLabel>
+          <Select
+            label="Origin"
+            value={filterOrigin}
+            onChange={(e) => setFilterOrigin(e.target.value)}
+            sx={{ borderRadius: 3 }}
+          >
+            <MenuItem value="">All</MenuItem>
+            {origins.map((o) => (
+              <MenuItem key={o} value={o}>
+                {o}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl size="small" sx={{ minWidth: 140 }}>
+          <InputLabel>Destination</InputLabel>
+          <Select
+            label="Destination"
+            value={filterDestination}
+            onChange={(e) => setFilterDestination(e.target.value)}
+            sx={{ borderRadius: 3 }}
+          >
+            <MenuItem value="">All</MenuItem>
+            {destinations.map((d) => (
+              <MenuItem key={d} value={d}>
+                {d}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Status</InputLabel>
+          <Select
+            label="Status"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            sx={{ borderRadius: 3 }}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="On Time">On Time</MenuItem>
+            <MenuItem value="Delayed">Delayed</MenuItem>
+            <MenuItem value="Cancelled">Cancelled</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={openAdd}
+          sx={{
+            bgcolor: "#000",
+            color: "#FFD700",
+            fontWeight: "bold",
+            borderRadius: "20px",
+            "&:hover": { bgcolor: "#333" },
+          }}
+        >
+          Add Flight
+        </Button>
+      </Paper>
 
       {loading ? (
         <Box
@@ -565,14 +595,24 @@ const FlightTable: React.FC = () => {
           alignItems="center"
           minHeight={300}
         >
-          <CircularProgress />
+          <CircularProgress sx={{ color: "#FFD700" }} />
         </Box>
       ) : filteredFlights.length === 0 ? (
         <Box textAlign="center" py={6}>
           <Typography color="text.secondary">No flights found.</Typography>
         </Box>
       ) : (
-        <Box sx={{ height: 520, width: "100%" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            height: 520,
+            width: "100%",
+            borderRadius: 4,
+            border: "1px solid #eee",
+            overflow: "hidden",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+          }}
+        >
           <DataGrid
             rows={filteredFlights}
             columns={columns}
@@ -583,8 +623,19 @@ const FlightTable: React.FC = () => {
                 paginationModel: { pageSize: 5, page: 0 },
               },
             }}
+            sx={{
+              border: "none",
+              "& .MuiDataGrid-columnHeaders": {
+                bgcolor: "#000",
+                color: "#FFD700",
+                fontWeight: "bold",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "1px solid #f0f0f0",
+              },
+            }}
           />
-        </Box>
+        </Paper>
       )}
 
       {/* ---------------- Add Flight Modal ---------------- */}
@@ -933,8 +984,8 @@ const FlightTable: React.FC = () => {
                           p.payment_status === "success"
                             ? "green"
                             : p.payment_status === "failed"
-                            ? "red"
-                            : "orange"
+                              ? "red"
+                              : "orange"
                         }
                       >
                         {p.payment_status}
@@ -951,7 +1002,7 @@ const FlightTable: React.FC = () => {
           <Button onClick={closeView}>Close</Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </Box>
   );
 };
 

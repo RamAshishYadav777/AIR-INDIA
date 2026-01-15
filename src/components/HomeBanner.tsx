@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import type { Settings } from "react-slick";
 import {
@@ -11,7 +11,6 @@ import {
 import type { SxProps, Theme } from "@mui/material";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Stars } from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { motion } from "framer-motion";
 import * as THREE from "three";
 
@@ -48,15 +47,10 @@ const beamPulse = keyframes`
 
 /* ---------------- 3D PARTICLES ---------------- */
 
-type MousePos = { x: number; y: number };
+const GoldParticles: React.FC<{ count?: number }> = ({ count = 300 }) => {
+  const ref = React.useRef<THREE.Points | null>(null);
 
-const GoldParticles: React.FC<{ mouse: MousePos; count?: number }> = ({
-  
-  count = 2000,
-}) => {
-  const ref = useRef<THREE.Points | null>(null);
-
-  const positions = useMemo(() => {
+  const positions = React.useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       arr[i * 3] = (Math.random() - 0.5) * 60;
@@ -68,19 +62,19 @@ const GoldParticles: React.FC<{ mouse: MousePos; count?: number }> = ({
 
   useFrame((state) => {
     if (!ref.current) return;
-
-    ref.current.rotation.y += 0.0008;
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime / 12) * 0.08;
+    ref.current.rotation.y += 0.0005;
+    ref.current.rotation.x = Math.sin(state.clock.elapsedTime / 15) * 0.05;
   });
 
   return (
     <Points ref={ref} positions={positions}>
       <PointMaterial
         color="#FFD700"
-        size={0.05}
+        size={0.06}
         sizeAttenuation
         transparent
         depthWrite={false}
+        opacity={0.8}
       />
     </Points>
   );
@@ -90,10 +84,6 @@ const GoldParticles: React.FC<{ mouse: MousePos; count?: number }> = ({
 
 const HomeBanner: React.FC = () => {
   const [slideIndex, setSlideIndex] = useState(0);
-  const [mousePos, setMousePos] = useState<MousePos>({ x: 0.5, y: 0.5 });
-  // const [ setScrollY] = useState(0);
-  const [, setScrollY] = useState(0);
-
 
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
@@ -112,35 +102,17 @@ const HomeBanner: React.FC = () => {
   const settings: Settings = {
     dots: true,
     infinite: true,
-    speed: 900,
+    speed: 1000,
     autoplay: true,
-    autoplaySpeed: 5200,
+    autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
     fade: true,
     pauseOnHover: false,
-    cssEase: "ease-in-out",
+    cssEase: "cubic-bezier(0.87, 0, 0.13, 1)", // Smooth easing
     beforeChange: (_c, n) => setSlideIndex(n),
   };
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) =>
-      setMousePos({
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight,
-      });
-
-    const onScroll = () => setScrollY(window.scrollY);
-
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("scroll", onScroll);
-
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
 
   /* ------------ Styles ---------------- */
   const shimmerText: SxProps<Theme> = {
@@ -159,47 +131,45 @@ const HomeBanner: React.FC = () => {
       sx={{
         position: "relative",
         overflow: "hidden",
-        mt: 4,
-        height: { xs: "60vh", md: "90vh" },
+        height: { xs: "60vh", md: "85vh" },
         borderRadius: 0,
         animation: `${colorCycle} 18s ease-in-out infinite`,
+        bgcolor: "#000",
       }}
     >
-      {/* Beam */}
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          width: "30%",
-          left: "35%",
-          height: "100%",
-          background:
-            "linear-gradient(180deg, rgba(255,245,200,0.2), rgba(255,215,0,0.05), transparent)",
-          filter: "blur(30px)",
-          pointerEvents: "none",
-          animation: `${beamPulse} 7s ease-in-out infinite`,
-          zIndex: 2,
-        }}
-      />
-
-      {/* 3D BACKGROUND */}
+      {/* 3D BACKGROUND - Optimized */}
       <Box
         sx={{
           position: "absolute",
           inset: 0,
           zIndex: 0,
+          opacity: 0.6,
         }}
       >
-        <Canvas camera={{ position: [0, 0, 12], fov: 50 }}>
-          <ambientLight intensity={0.28} />
-          <pointLight position={[6, 6, 6]} intensity={1.4} color="#FFD700" />
-          <GoldParticles mouse={mousePos} />
-          <Stars radius={70} factor={4} depth={80} fade speed={1} />
-          <EffectComposer>
-            <Bloom intensity={0.9} luminanceThreshold={0.1} luminanceSmoothing={0.45} />
-          </EffectComposer>
+        <Canvas camera={{ position: [0, 0, 14], fov: 45 }} dpr={[1, 1.5]}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1.5} color="#FFD700" />
+          <GoldParticles />
+          <Stars radius={80} factor={3} depth={60} fade speed={0.5} />
         </Canvas>
       </Box>
+
+      {/* Beam Effect */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          width: { xs: "80%", md: "40%" },
+          left: { xs: "10%", md: "30%" },
+          height: "100%",
+          background:
+            "linear-gradient(180deg, rgba(255,215,0,0.15), rgba(0,0,0,0), transparent)",
+          filter: "blur(40px)",
+          pointerEvents: "none",
+          animation: `${beamPulse} 8s ease-in-out infinite`,
+          zIndex: 2,
+        }}
+      />
 
       {/* FOREGROUND */}
       <Box
@@ -211,19 +181,21 @@ const HomeBanner: React.FC = () => {
       >
         {/* TITLE */}
         <motion.div
-          initial={{ opacity: 0, y: -18 }}
+          key={slideIndex} // Re-trigger animation on slide change
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           style={{
             position: "absolute",
-            top: isSmall ? "auto" : 30,
-            bottom: isSmall ? 24 : "auto",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 6,
+            top: isSmall ? "15%" : "20%",
+            right: "5%",
+            width: isSmall ? "90%" : "60%",
+            textAlign: "right",
+            zIndex: 10,
+            padding: "0 20px",
           }}
         >
-          <Typography variant={isSmall ? "h6" : "h3"} sx={shimmerText}>
+          <Typography variant={isSmall ? "h5" : "h2"} sx={shimmerText}>
             {captions[slideIndex]}
           </Typography>
         </motion.div>
@@ -233,54 +205,27 @@ const HomeBanner: React.FC = () => {
           <Slider {...settings}>
             {images.map((src, i) => (
               <Box key={i} sx={{ height: "100%", position: "relative" }}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 1.1 }}
-                >
-                  <Box
-                    component="img"
-                    src={src}
-                    sx={{
-                      width: "100%",
-                      height: { xs: "60vh", md: "90vh" },
-                      objectFit: "cover",
-                      display: "block",
-                      transform: `translate3d(${(mousePos.x - 0.5) * 20}px,
-                                             ${(mousePos.y - 0.5) * 12}px, 0)`,
-                      transition: "transform 0.1s linear",
-                    }}
-                  />
-                </motion.div>
-
+                <Box
+                  component="img"
+                  src={src}
+                  sx={{
+                    width: "100%",
+                    height: { xs: "60vh", md: "85vh" },
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
                 <Box
                   sx={{
                     position: "absolute",
                     inset: 0,
                     background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.5), rgba(0,0,0,0.9))",
+                      "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.8) 100%)",
                   }}
                 />
               </Box>
             ))}
           </Slider>
-        </Box>
-
-        {/* Mouse sparkle */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: `${mousePos.y * 100}%`,
-            left: `${mousePos.x * 100}%`,
-            transform: "translate(-50%, -50%)",
-            fontSize: 22,
-            opacity: 0.6,
-            color: "gold",
-            pointerEvents: "none",
-            zIndex: 10,
-          }}
-        >
-          ✨
         </Box>
       </Box>
     </Box>

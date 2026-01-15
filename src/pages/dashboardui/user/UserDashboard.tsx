@@ -21,11 +21,23 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Chip,
+  Stack,
+  Divider,
+  Container,
 } from "@mui/material";
-import { Save as SaveIcon } from "@mui/icons-material";
+import {
+  Save as SaveIcon,
+  FlightTakeoff,
+  Person,
+  Settings,
+  Logout,
+  Cancel as CancelIcon,
+} from "@mui/icons-material";
 import { supabase } from "../../../lib/supabase";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface UserData {
   id: string;
@@ -41,7 +53,7 @@ interface Booking {
   passenger_name: string;
   passenger_age: number;
   passenger_gender: string;
-  payment_status: string;
+  payment_status: "success" | "failed" | "pending";
   flights?: {
     flight_number: string;
     origin: string;
@@ -110,7 +122,6 @@ const UserDashboard: React.FC = () => {
               flight_number,
               origin,
               destination,
-              flight_date,
               departure_time,
               arrival_time
             )
@@ -121,7 +132,7 @@ const UserDashboard: React.FC = () => {
 
         if (error) throw error;
 
-        setBookings(data || []);
+        setBookings(data as Booking[] || []);
       } catch (err) {
         console.error("Error fetching bookings:", err);
       } finally {
@@ -184,11 +195,23 @@ const UserDashboard: React.FC = () => {
   };
 
   // Format time helper
-  const formatTime = (time: string) =>
-    new Date(time).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const formatDateTime = (isoString?: string) => {
+    if (!isoString) return { date: "N/A", time: "N/A" };
+    const date = new Date(isoString);
+    return {
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "success": return "success";
+      case "failed": return "error";
+      case "pending": return "warning";
+      default: return "default";
+    }
+  };
 
   if (loading) {
     return (
@@ -197,273 +220,487 @@ const UserDashboard: React.FC = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
+        bgcolor="#f8f9fa"
       >
-        <CircularProgress color="warning" />
+        <CircularProgress sx={{ color: "#FFD700" }} />
       </Box>
     );
   }
+
+  const TabPanel = ({ children, index }: { children: React.ReactNode; index: number }) => (
+    <div role="tabpanel" hidden={tabIndex !== index}>
+      <AnimatePresence mode="wait">
+        {tabIndex === index && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 
   return (
     <>
       <Box
         sx={{
-          minHeight: "85vh",
-          bgcolor: "#fafafa",
-          py: 6,
-          px: { xs: 2, sm: 4, md: 8 },
+          minHeight: "90vh",
+          background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+          pb: 8,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* Header */}
-        <Box textAlign="center" mb={5}>
-          <Typography
-            variant="h4"
-            fontWeight={700}
-            sx={{
-              background: "linear-gradient(90deg, #d26919, #f39c12)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Welcome, {user?.full_name || user?.email?.split("@")[0]} 👋
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Manage your bookings, profile, and account settings here.
-          </Typography>
-        </Box>
+        {/* Background Decors */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: -100,
+            left: -100,
+            width: 400,
+            height: 400,
+            borderRadius: "50%",
+            background: "rgba(255, 215, 0, 0.1)",
+            filter: "blur(80px)",
+            zIndex: 0,
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -50,
+            right: -50,
+            width: 300,
+            height: 300,
+            borderRadius: "50%",
+            background: "rgba(0, 0, 0, 0.05)",
+            filter: "blur(60px)",
+            zIndex: 0,
+          }}
+        />
 
-        {/* Tabs */}
-        <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
-          <Tabs
-            value={tabIndex}
-            onChange={(_, val) => setTabIndex(val)}
-            textColor="inherit"
-            TabIndicatorProps={{ style: { backgroundColor: "#FFD700" } }}
-          >
-            <Tab label="Profile" />
-            <Tab label="Bookings" />
-            <Tab label="Settings" />
-            <Tab label="Logout" />
-          </Tabs>
-        </Box>
-
-        {/* Profile Tab */}
-        {tabIndex === 0 && (
-          <Card
-            sx={{
-              maxWidth: 800,
-              mx: "auto",
-              p: 3,
-              borderRadius: 3,
-              boxShadow: 3,
-            }}
-          >
-            <Box display="flex" alignItems="center" gap={3}>
-              <Avatar
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, pt: 6 }}>
+          {/* Header */}
+          <Box textAlign="center" mb={6}>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Typography
+                variant="h3"
+                fontWeight={800}
                 sx={{
-                  width: 90,
-                  height: 90,
-                  bgcolor: "#FFD700",
-                  color: "#000",
-                  fontSize: 36,
+                  background: "linear-gradient(90deg, #1a1a1a, #4a4a4a)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  mb: 1,
                 }}
               >
-                {user?.email?.charAt(0).toUpperCase()}
-              </Avatar>
-
-              <Box>
-                <Typography variant="h6">{user?.full_name}</Typography>
-                <Typography color="text.secondary">{user?.email}</Typography>
-                <Typography variant="body2" mt={1}>
-                  Member since: {new Date().toLocaleDateString()}
-                </Typography>
-              </Box>
-            </Box>
-          </Card>
-        )}
-
-        {/* Bookings Tab */}
-        {tabIndex === 1 && (
-          <Card sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
-            <Typography variant="h6" fontWeight={600} mb={2}>
-              ✈️ My Bookings
-            </Typography>
-
-            {fetchingBookings ? (
-              <Box textAlign="center" py={5}>
-                <CircularProgress color="warning" />
-                <Typography mt={2}>Loading your bookings...</Typography>
-              </Box>
-            ) : bookings.length > 0 ? (
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead sx={{ backgroundColor: "#d26919" }}>
-                    <TableRow>
-                      <TableCell sx={{ color: "#fff" }}>Flight</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Route</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Date</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Timing</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Seat</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Passenger</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Payment</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {bookings.map((b) => (
-                      <TableRow key={b.id}>
-                        <TableCell>{b.flights?.flight_number}</TableCell>
-
-                        <TableCell>
-                          {b.flights?.origin} → {b.flights?.destination}
-                        </TableCell>
-
-                        <TableCell>
-                          {new Date(
-                            b.flights?.flight_date || ""
-                          ).toLocaleDateString()}
-                        </TableCell>
-
-                        <TableCell>
-                          {formatTime(b.flights?.departure_time || "")} →{" "}
-                          {formatTime(b.flights?.arrival_time || "")}
-                        </TableCell>
-
-                        <TableCell>{b.seat_number}</TableCell>
-                        <TableCell>{b.passenger_name}</TableCell>
-
-                        <TableCell>
-                          <Typography
-                            sx={{
-                              color:
-                                b.payment_status === "success"
-                                  ? "green"
-                                  : b.payment_status === "failed"
-                                  ? "red"
-                                  : "orange",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {b.payment_status}
-                          </Typography>
-                        </TableCell>
-
-                        {/* CANCEL BUTTON */}
-                        <TableCell>
-                          <Button
-                            variant="contained"
-                            color="error"
-                            size="small"
-                            sx={{
-                              fontSize: "12px",
-                              textTransform: "none",
-                              boxShadow: "none",
-                            }}
-                            onClick={() => {
-                              setSelectedBookingId(b.id);
-                              setOpenDialog(true);
-                            }}
-                          >
-                            Cancel Flight
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <Typography color="text.secondary" mt={3}>
-                No bookings found.
+                Welcome back, {user?.full_name?.split(" ")[0] || "Traveler"}! 👋
               </Typography>
-            )}
-          </Card>
-        )}
+              <Typography variant="h6" color="text.secondary" fontWeight={500}>
+                Your personal travel command center
+              </Typography>
+            </motion.div>
+          </Box>
 
-        {/* Settings Tab */}
-        {tabIndex === 2 && (
-          <Card
+          {/* Navigation Tabs */}
+          <Paper
+            elevation={0}
             sx={{
-              maxWidth: 600,
+              borderRadius: "50px",
+              bgcolor: "rgba(255,255,255,0.7)",
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(255,255,255,0.8)",
+              mb: 5,
               mx: "auto",
-              p: 3,
-              borderRadius: 3,
-              boxShadow: 3,
+              maxWidth: 600,
+              p: 0.5,
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            <Typography variant="h6">⚙️ Account Settings</Typography>
-
-            <TextField
-              label="Full Name"
-              fullWidth
-              margin="normal"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
-
-            <TextField
-              label="New Password"
-              type="password"
-              fullWidth
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <Button
-              variant="contained"
-              startIcon={<SaveIcon />}
+            <Tabs
+              value={tabIndex}
+              onChange={(_, val) => setTabIndex(val)}
+              variant="scrollable"
+              scrollButtons="auto"
+              textColor="primary"
+              indicatorColor="primary"
               sx={{
-                mt: 2,
-                bgcolor: "#FFD700",
-                color: "#000",
-                fontWeight: 600,
+                "& .MuiTab-root": {
+                  borderRadius: "50px",
+                  minHeight: 48,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  px: 3,
+                  transition: "all 0.2s",
+                  color: "#666",
+                  "&.Mui-selected": {
+                    color: "#000",
+                    bgcolor: "#fff",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  },
+                },
+                "& .MuiTabs-indicator": { display: "none" },
               }}
-              onClick={handleUpdateProfile}
             >
-              Save Changes
-            </Button>
-          </Card>
-        )}
+              <Tab icon={<Person fontSize="small" />} iconPosition="start" label="Profile" />
+              <Tab icon={<FlightTakeoff fontSize="small" />} iconPosition="start" label="Bookings" />
+              <Tab icon={<Settings fontSize="small" />} iconPosition="start" label="Settings" />
+              <Tab icon={<Logout fontSize="small" />} iconPosition="start" label="Logout" sx={{ color: "error.main" }} />
+            </Tabs>
+          </Paper>
 
-        {/* Logout Tab */}
-        {tabIndex === 3 && (
-          <Box textAlign="center" mt={6}>
-            <Typography>Are you sure you want to logout?</Typography>
+          {/* Profile Tab */}
+          <TabPanel index={0}>
+            <Card
+              sx={{
+                maxWidth: 700,
+                mx: "auto",
+                borderRadius: 4,
+                overflow: "hidden",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+                background: "rgba(255,255,255,0.8)",
+                backdropFilter: "blur(20px)",
+              }}
+            >
+              <Box
+                sx={{
+                  height: 140,
+                  background: "linear-gradient(90deg, #000 0%, #333 100%)",
+                  position: "relative",
+                }}
+              />
+              <Box sx={{ px: 4, pb: 4, mt: -6, textAlign: "center" }}>
+                <Avatar
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    border: "4px solid #fff",
+                    bgcolor: "#FFD700",
+                    color: "#000",
+                    fontSize: 48,
+                    fontWeight: "bold",
+                    mx: "auto",
+                    boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+                    mb: 2,
+                  }}
+                >
+                  {user?.full_name?.charAt(0).toUpperCase() || "U"}
+                </Avatar>
+                <Typography variant="h5" fontWeight={700}>
+                  {user?.full_name || "Guest User"}
+                </Typography>
+                <Typography color="text.secondary" gutterBottom>
+                  {user?.email}
+                </Typography>
+                <Chip
+                  label="Frequent Flyer"
+                  size="small"
+                  sx={{ bgcolor: "#FFD700", color: "#000", fontWeight: "bold", mt: 1 }}
+                />
+
+                <Divider sx={{ my: 3 }} />
+
+                <Stack
+                  direction={{ xs: "column", sm: "row" }}
+                  justifyContent="center"
+                  spacing={{ xs: 2, sm: 4 }}
+                  divider={<Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', sm: 'block' } }} />}
+                >
+                  <Box>
+                    <Typography variant="h4" fontWeight={800} color="primary">
+                      {bookings.length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Total Flights
+                    </Typography>
+                  </Box>
+                  <Divider sx={{ display: { xs: 'block', sm: 'none' } }} />
+                  <Box>
+                    <Typography variant="h4" fontWeight={800} color="primary">
+                      0
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Points Earned
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Card>
+          </TabPanel>
+
+          {/* Bookings Tab */}
+          <TabPanel index={1}>
+            <Card
+              sx={{
+                borderRadius: 4,
+                boxShadow: "0 4px 25px rgba(0,0,0,0.05)",
+                overflow: "hidden",
+              }}
+            >
+              <Box p={3} bgcolor="#000" color="#fff" display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h6" fontWeight={700} color="#FFD700">
+                  ✈️ My Flight History
+                </Typography>
+                <Chip label={`${bookings.length} Bookings`} sx={{ bgcolor: "rgba(255,215,0,0.2)", color: "#FFD700" }} />
+              </Box>
+
+              {fetchingBookings ? (
+                <Box textAlign="center" py={8}>
+                  <CircularProgress size={40} sx={{ color: "#FFD700" }} />
+                  <Typography mt={2} color="text.secondary">Fetching your flights...</Typography>
+                </Box>
+              ) : bookings.length > 0 ? (
+                <>
+                  {/* Desktop Table View */}
+                  <Box sx={{ display: { xs: "none", md: "block" } }}>
+                    <TableContainer component={Paper} elevation={0}>
+                      <Table>
+                        <TableHead sx={{ bgcolor: "#f5f5f5" }}>
+                          <TableRow>
+                            {["Flight", "From → To", "Date & Time", "Passenger", "Seat", "Status", "Action"].map((h) => (
+                              <TableCell key={h} sx={{ fontWeight: "bold", color: "#555" }}>
+                                {h}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {bookings.map((b) => {
+                            const dep = formatDateTime(b.flights?.departure_time);
+                            const arr = formatDateTime(b.flights?.arrival_time);
+                            return (
+                              <TableRow key={b.id} hover>
+                                <TableCell>
+                                  <Typography fontWeight={600}>{b.flights?.flight_number || "N/A"}</Typography>
+                                  <Typography variant="caption" color="text.secondary">{b.booking_id}</Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography fontWeight={600} fontSize="0.9rem">
+                                    {b.flights?.origin}
+                                    <span style={{ margin: "0 8px", color: "#ccc" }}>✈</span>
+                                    {b.flights?.destination}
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography variant="body2" fontWeight={500}>{dep.date}</Typography>
+                                  <Typography variant="caption" color="text.secondary">
+                                    {dep.time} - {arr.time}
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>{b.passenger_name}</TableCell>
+
+                                <TableCell>
+                                  <Chip label={b.seat_number} size="small" sx={{ bgcolor: "#eee", fontWeight: "bold" }} />
+                                </TableCell>
+
+                                <TableCell>
+                                  <Chip
+                                    label={b.payment_status.toUpperCase()}
+                                    color={getStatusColor(b.payment_status) as any}
+                                    size="small"
+                                    variant="filled"
+                                    sx={{ fontWeight: "bold", fontSize: "0.75rem", minWidth: 80 }}
+                                  />
+                                </TableCell>
+
+                                <TableCell>
+                                  <Button
+                                    variant="outlined"
+                                    color="error"
+                                    size="small"
+                                    startIcon={<CancelIcon />}
+                                    onClick={() => {
+                                      setSelectedBookingId(b.id);
+                                      setOpenDialog(true);
+                                    }}
+                                    sx={{ borderRadius: 20, textTransform: "none" }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+
+                  {/* Mobile Card View */}
+                  <Box sx={{ display: { xs: "block", md: "none" } }}>
+                    <Stack spacing={2}>
+                      {bookings.map((b) => {
+                        const dep = formatDateTime(b.flights?.departure_time);
+                        return (
+                          <Card key={b.id} sx={{ p: 2, borderRadius: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
+                            <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                              <Box>
+                                <Typography variant="h6" fontWeight={700}>{b.flights?.origin} ➝ {b.flights?.destination}</Typography>
+                                <Typography variant="caption" color="text.secondary">{dep.date} • {dep.time}</Typography>
+                              </Box>
+                              <Chip
+                                label={b.payment_status.toUpperCase()}
+                                color={getStatusColor(b.payment_status) as any}
+                                size="small"
+                                variant="filled"
+                                sx={{ height: 24, fontSize: "0.7rem", fontWeight: "bold" }}
+                              />
+                            </Stack>
+
+                            <Divider sx={{ my: 1 }} />
+
+                            <Stack spacing={0.5} mb={2}>
+                              <Typography variant="body2"><strong>Flight:</strong> {b.flights?.flight_number}</Typography>
+                              <Typography variant="body2"><strong>Passenger:</strong> {b.passenger_name}</Typography>
+                              <Typography variant="body2"><strong>Seat:</strong> {b.seat_number}</Typography>
+                              <Typography variant="caption" color="text.secondary">Booking ID: {b.booking_id}</Typography>
+                            </Stack>
+
+                            <Button
+                              variant="outlined"
+                              color="error"
+                              fullWidth
+                              size="small"
+                              startIcon={<CancelIcon />}
+                              onClick={() => {
+                                setSelectedBookingId(b.id);
+                                setOpenDialog(true);
+                              }}
+                            >
+                              Cancel Booking
+                            </Button>
+                          </Card>
+                        );
+                      })}
+                    </Stack>
+                  </Box>
+                </>
+              ) : (
+                <Box textAlign="center" py={8}>
+                  <Typography variant="h6" color="text.secondary">No bookings found</Typography>
+                  <Button variant="contained" sx={{ mt: 2, bgcolor: "#000", color: "#FFD700" }} onClick={() => navigate("/")}>
+                    Book a Flight
+                  </Button>
+                </Box>
+              )}
+            </Card>
+          </TabPanel>
+
+          {/* Settings Tab */}
+          <TabPanel index={2}>
+            <Card
+              sx={{
+                maxWidth: 550,
+                mx: "auto",
+                p: 4,
+                borderRadius: 4,
+                boxShadow: "0 8px 30px rgba(0,0,0,0.05)",
+              }}
+            >
+              <Typography variant="h5" fontWeight={700} mb={3}>
+                ⚙️ Account Settings
+              </Typography>
+
+              <TextField
+                label="Full Name"
+                fullWidth
+                margin="normal"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                InputProps={{ sx: { borderRadius: 2 } }}
+              />
+
+              <TextField
+                label="New Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{ sx: { borderRadius: 2 } }}
+                helperText="Leave blank to keep current password"
+              />
+
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<SaveIcon />}
+                size="large"
+                sx={{
+                  mt: 4,
+                  bgcolor: "#000",
+                  color: "#FFD700",
+                  fontWeight: "bold",
+                  borderRadius: 2,
+                  py: 1.5,
+                  "&:hover": { bgcolor: "#333" },
+                }}
+                onClick={handleUpdateProfile}
+              >
+                Save Changes
+              </Button>
+            </Card>
+          </TabPanel>
+
+          {/* Logout Tab */}
+          <TabPanel index={3}>
+            <Box textAlign="center" mt={8}>
+              <Typography variant="h5" gutterBottom fontWeight={600}>
+                Ready to take a break?
+              </Typography>
+              <Typography color="text.secondary" mb={4}>
+                You are about to sign out of your account.
+              </Typography>
+              <Button
+                variant="contained"
+                color="error"
+                size="large"
+                startIcon={<Logout />}
+                onClick={handleLogout}
+                sx={{ px: 6, py: 1.5, borderRadius: 50, fontWeight: "bold" }}
+              >
+                Sign Out
+              </Button>
+            </Box>
+          </TabPanel>
+        </Container>
+
+        {/* Cancel Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Cancel Booking?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to cancel this flight? This action typically cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ p: 2 }}>
+            <Button onClick={() => setOpenDialog(false)} variant="outlined" sx={{ borderRadius: 2 }}>
+              Keep Flight
+            </Button>
             <Button
+              onClick={handleCancelBooking}
               variant="contained"
               color="error"
-              sx={{ px: 4, mt: 2 }}
-              onClick={handleLogout}
+              sx={{ borderRadius: 2 }}
+              autoFocus
             >
-              Logout
+              Confirm Cancel
             </Button>
-          </Box>
-        )}
-      </Box>
-
-      {/* CANCEL FLIGHT DIALOG */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Cancel Flight?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to cancel this booking? This action cannot be
-            undone.
-          </DialogContentText>
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>No, Keep Booking</Button>
-
-          <Button
-            onClick={handleCancelBooking}
-            variant="contained"
-            color="error"
-          >
-            Yes, Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogActions>
+        </Dialog>
+      </Box >
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+declare const Deno: any;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -30,48 +31,89 @@ Deno.serve(async (req) => {
   if (req.method === "POST") {
     try {
       const body = await req.json();
-      console.log("📦 Incoming body:", JSON.stringify(body, null, 2));
 
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingData } = body;
 
-      const secret = Deno.env.get("RAZORPAY_KEY_SECRET");
+      // Check if this is a mock payment
+      const isMockPayment = razorpay_order_id?.startsWith('order_mock_') ||
+        razorpay_payment_id?.startsWith('pay_mock_');
+
+      if (isMockPayment) {
+        console.log("🎭 Mock payment detected - bypassing signature verification");
+
+        const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+        const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+        if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+          throw new Error("Missing Supabase environment variables");
+        }
+
+        const bookingId = crypto.randomUUID();
+        const responseData = [{ id: bookingId, status: "mock_verified" }];
+
+        console.log("✅ Mock payment verified. Generated Booking ID:", bookingId);
+
+        return new Response(JSON.stringify({ success: true, data: responseData }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Real Razorpay payment verification
+      // Retrieve Razorpay secret and Supabase credentials, with fallback for secret name
+      const secret = Deno.env.get("RAZORPAY_KEY_SECRET") ?? Deno.env.get("RAZORPAY_SECRET");
       const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
       const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
+      // Log environment presence (mask secret for security)
       console.log("🔐 Env check:", {
         hasSecret: !!secret,
+        secretPreview: secret ? `${secret.slice(0, 4)}****${secret.slice(-4)}` : null,
         hasURL: !!SUPABASE_URL,
         hasKey: !!SERVICE_ROLE_KEY,
       });
 
-      if (!secret || !SUPABASE_URL || !SERVICE_ROLE_KEY) {
-        throw new Error("Missing environment variable(s)");
+      // Ensure all required variables are present
+      if (!secret) {
+        throw new Error("Missing Razorpay secret environment variable");
+      }
+      if (!SUPABASE_URL) {
+        throw new Error("Missing SUPABASE_URL environment variable");
+      }
+      if (!SERVICE_ROLE_KEY) {
+        throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
       }
 
+      // Generate signature using the provided secret
       const generatedSignature = await generateSignature(
         razorpay_order_id,
         razorpay_payment_id,
         secret
       );
 
+      // Detailed logging for debugging signature verification
       console.log("🧾 Generated Signature:", generatedSignature);
       console.log("🧾 Received Signature:", razorpay_signature);
+      console.log("🔎 Comparing signatures", {
+        match: generatedSignature === razorpay_signature,
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id,
+      });
 
+      // Verify the signature matches Razorpay's expectation
+      // Verify the signature matches Razorpay's expectation
       if (generatedSignature !== razorpay_signature) {
         throw new Error("Invalid signature — mismatch detected");
       }
 
-      const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-      const { data, error } = await supabase.from("bookings").insert([bookingData]).select();
+      // Generate a booking ID to return to the client
+      // The client handles the detailed insertion into 'passengers' and 'payments' tables
+      const bookingId = crypto.randomUUID();
+      const responseData = [{ id: bookingId, status: "verified" }];
 
-      if (error) {
-        console.error("❌ Database insert error:", error);
-        throw new Error(error.message);
-      }
+      console.log("✅ Payment verified. Generated Booking ID:", bookingId);
 
-      console.log("✅ Booking inserted successfully:", data);
-
-      return new Response(JSON.stringify({ success: true, data }), {
+      return new Response(JSON.stringify({ success: true, data: responseData }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

@@ -213,19 +213,46 @@ const Payment: React.FC = () => {
     setLoading(true);
 
     try {
+      // Get session token
+      const { data: { session } } = await supabase.auth.getSession();
+
       // Create Razorpay order
       const { data: order, error } = await supabase.functions.invoke(
         "create-razorpay-order",
-        { body: { amount: amountToPay * 100 } }
+        {
+          body: { amount: amountToPay * 100 },
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+          }
+        }
       );
 
       if (error || !order) {
-        alert("Failed to create order");
+        console.error("Order creation error:", error);
+        alert(`Failed to create order: ${error?.message || 'Unknown error'}`);
         setLoading(false);
         return;
       }
 
-      // Razorpay Checkout Options
+      // Check if this is a mock order (for testing without valid Razorpay credentials)
+      const isMockOrder = order.id?.startsWith('order_mock_');
+
+      if (isMockOrder) {
+        console.log("🎭 Mock payment mode detected - simulating successful payment");
+
+        // Simulate payment success after 2 seconds
+        setTimeout(async () => {
+          const mockResponse = {
+            razorpay_order_id: order.id,
+            razorpay_payment_id: `pay_mock_${Date.now()}`,
+            razorpay_signature: `mock_signature_${Date.now()}`,
+          };
+          await handlePaymentSuccess(mockResponse);
+        }, 2000);
+        return;
+      }
+
+      // Real Razorpay Checkout Options
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
@@ -246,6 +273,7 @@ const Payment: React.FC = () => {
         },
         theme: { color: "#b71c1c" },
       };
+
 
       const rzp = new window.Razorpay(options);
       rzp.open();

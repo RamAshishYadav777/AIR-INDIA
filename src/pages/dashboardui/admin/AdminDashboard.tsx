@@ -18,11 +18,18 @@ import { fetchFlights } from "../../../hooks/redux/slices/flightSlice";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabase";
 
+// Icons
+import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
+import GroupIcon from "@mui/icons-material/Group";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle"; // Alternative for users
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+
 interface DashboardStats {
   totalFlights: number;
   totalBookings: number;
   totalUsers: number;
   totalRevenue: number;
+  chartData: { name: string; revenue: number }[];
 }
 
 const AdminDashboard: React.FC = () => {
@@ -33,6 +40,7 @@ const AdminDashboard: React.FC = () => {
     totalBookings: 0,
     totalUsers: 0,
     totalRevenue: 0,
+    chartData: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -57,35 +65,62 @@ const AdminDashboard: React.FC = () => {
         .select("*", { count: "exact", head: true });
       if (flightError) throw flightError;
 
-      // ✅ Count Bookings (passengers table)
+      // ✅ Count Bookings
       const { count: bookingCount, error: bookingError } = await supabase
         .from("passengers")
         .select("*", { count: "exact", head: true });
       if (bookingError) throw bookingError;
 
-      // ✅ Count Users
-      const { data: usersData, error: usersError } = await supabase
-        .from("users")
-        .select("id");
-      if (usersError) throw usersError;
+      // ✅ Count Active Users (via passengers unique user_id)
+      const { data: passengersData } = await supabase
+        .from("passengers")
+        .select("user_id");
 
-      // ✅ Calculate Total Revenue (sum of payments)
+      const uniqueUsers = new Set(passengersData?.map((p) => p.user_id)).size;
+
+      // ✅ Calculate Total Revenue & Chart Data
       const { data: payments, error: paymentError } = await supabase
         .from("payments")
-        .select("amount")
+        .select("amount, created_at")
         .eq("status", "success");
+
       if (paymentError && paymentError.code !== "PGRST116") throw paymentError;
 
+      // Total Revenue
       const totalRevenue = payments?.reduce(
         (sum: number, row: any) => sum + (row.amount || 0),
         0
       );
 
+      // Process Chart Data (Group by Day Name: Mon, Tue...)
+      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const revenueByDay: Record<string, number> = {};
+
+      // Initialize with 0 to ensure order if desired, or just aggregate existing
+      // Let's aggregate existing data points
+      payments?.forEach((p) => {
+        const date = new Date(p.created_at);
+        const dayName = days[date.getDay()];
+        revenueByDay[dayName] = (revenueByDay[dayName] || 0) + (p.amount || 0);
+      });
+
+      // Convert to array suitable for chart
+      // For a "Last 7 days" view, ideally we project back 7 days, but for now simple aggregation:
+      const chartData = Object.entries(revenueByDay).map(([name, revenue]) => ({
+        name,
+        revenue,
+      }));
+
+      // Sort chart data by day index to keep order Mon-Sun or relative? 
+      // Simple sort by day index for display consistency
+      chartData.sort((a, b) => days.indexOf(a.name) - days.indexOf(b.name));
+
       setStats({
         totalFlights: flightCount || 0,
         totalBookings: bookingCount || 0,
-        totalUsers: usersData?.length || 0,
+        totalUsers: uniqueUsers || 0,
         totalRevenue: totalRevenue || 0,
+        chartData: chartData.length > 0 ? chartData : [{ name: "No Data", revenue: 0 }],
       });
     } catch (err: any) {
       console.error("❌ Error fetching dashboard data:", err);
@@ -99,38 +134,31 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // ✅ Fetch once when component loads
   useEffect(() => {
     fetchDashboardData();
     dispatch(fetchFlights());
   }, [dispatch]);
 
-  // ✅ Supabase Realtime — auto update dashboard
+  // Realtime subscriptions
   useEffect(() => {
     const flightSub = supabase
       .channel("realtime_flights")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "flights" },
-        () => fetchDashboardData()
+      .on("postgres_changes", { event: "*", schema: "public", table: "flights" }, () =>
+        fetchDashboardData()
       )
       .subscribe();
 
     const bookingSub = supabase
       .channel("realtime_bookings")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "passengers" },
-        () => fetchDashboardData()
+      .on("postgres_changes", { event: "*", schema: "public", table: "passengers" }, () =>
+        fetchDashboardData()
       )
       .subscribe();
 
     const paymentSub = supabase
       .channel("realtime_payments")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "payments" },
-        () => fetchDashboardData()
+      .on("postgres_changes", { event: "*", schema: "public", table: "payments" }, () =>
+        fetchDashboardData()
       )
       .subscribe();
 
@@ -161,17 +189,23 @@ const AdminDashboard: React.FC = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        mb={2}
+        mb={4}
       >
-        <Typography variant="h5" fontWeight="bold">
+        <Typography variant="h4" fontWeight="bold" sx={{ color: "#333" }}>
           Dashboard Overview
         </Typography>
 
-        {/* ✅ Redirect to AddFlight Page */}
         <Button
           variant="contained"
           color="primary"
           onClick={() => navigate("/dashboard/addflight")}
+          sx={{
+            background: "linear-gradient(45deg, #FFD700 30%, #FF8C00 90%)",
+            color: "#000",
+            fontWeight: "bold",
+            padding: "10px 24px",
+            boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+          }}
         >
           + Add Flight
         </Button>
@@ -183,35 +217,45 @@ const AdminDashboard: React.FC = () => {
           <StatCard
             title="Total Flights"
             value={stats.totalFlights.toString()}
+            icon={<FlightTakeoffIcon sx={{ fontSize: 28 }} />}
+            color="#1E90FF"
           />
         </Grid>
-        {/* <Grid item xs={12} sm={6} md={3}> */}
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title="Total Bookings"
             value={stats.totalBookings.toString()}
+            icon={<GroupIcon sx={{ fontSize: 28 }} />}
+            color="#32CD32"
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard title="Total Users" value={stats.totalUsers.toString()} />
+          <StatCard
+            title="Active Users"
+            value={stats.totalUsers.toString()}
+            icon={<SupervisedUserCircleIcon sx={{ fontSize: 28 }} />}
+            color="#FF4500"
+          />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title="Total Revenue"
             value={`₹${stats.totalRevenue.toLocaleString()}`}
+            icon={<AccountBalanceWalletIcon sx={{ fontSize: 28 }} />}
+            color="#FFD700"
           />
         </Grid>
       </Grid>
 
       {/* Chart Section */}
-      <ChartSection />
+      <ChartSection data={stats.chartData} />
 
       {/* Flight Table */}
-      <Box mt={4}>
-        <Typography variant="h6" fontWeight="bold" mb={1}>
-          ✈️ Flights List
+      <Box mt={5}>
+        <Typography variant="h5" fontWeight="bold" mb={2} sx={{ color: "#444" }}>
+          ✈️ Recent Flights
         </Typography>
-        <FlightTable />
+        <FlightTable showTitle={false} />
       </Box>
 
       {/* Snackbar */}

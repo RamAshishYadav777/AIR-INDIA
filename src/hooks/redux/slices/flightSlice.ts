@@ -42,7 +42,6 @@ export const fetchFlights = createAsyncThunk<Flight[]>(
       console.error("❌ Error fetching flights:", error.message);
       throw new Error(error.message);
     }
-     console.log("Fetched flights:", data);
 
     return data as Flight[];
   }

@@ -55,8 +55,10 @@ const Footer: React.FC = () => {
 
   // 🌟 Logo pulse animation
   useEffect(() => {
+    let isMounted = true;
+
     const pulse = async () => {
-      while (true) {
+      while (isMounted) {
         await pulseControls.start({
           scale: [1, 1.05, 1],
           filter: [
@@ -66,10 +68,17 @@ const Footer: React.FC = () => {
           ],
           transition: { duration: 3.5, ease: "easeInOut" },
         });
+        if (!isMounted) break;
         await new Promise((r) => setTimeout(r, 6500));
       }
     };
+
     pulse();
+
+    return () => {
+      isMounted = false;
+      pulseControls.stop(); // Stop any active animation
+    };
   }, [pulseControls]);
 
   // 💥 Gold spark burst on click

@@ -1,4 +1,4 @@
-console.log("✅ Router file loaded successfully");
+
 
 import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
@@ -174,15 +174,15 @@ const router = createBrowserRouter([
     ),
   },
   {
-  path: "/dashboard/flightlist",
-  element: withSuspense(
-    <ProtectedRoute allowedRoles={["admin"]}>
-      <AdminLayout>
-        <FlightListPage />
-      </AdminLayout>
-    </ProtectedRoute>
-  ),
-},
+    path: "/dashboard/flightlist",
+    element: withSuspense(
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminLayout>
+          <FlightListPage />
+        </AdminLayout>
+      </ProtectedRoute>
+    ),
+  },
 
   // {
   //   path: "/dashboard/analytics",
@@ -210,4 +210,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
-console.log("✅ Router exported successfully");
+

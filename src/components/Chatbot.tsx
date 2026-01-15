@@ -15,7 +15,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import axios from "axios";
+import { supabase } from "../lib/supabase";
 
 interface Message {
   role: "user" | "bot";
@@ -31,8 +31,6 @@ const Chatbot: React.FC = () => {
   const [lastMessageTime, setLastMessageTime] = useState(0);
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
-  const sendSound = useRef<HTMLAudioElement | null>(null);
-  const replySound = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,23 +47,11 @@ const Chatbot: React.FC = () => {
     }
   }, [open]);
 
-  useEffect(() => {
-    const sendAudio = new Audio("/sounds/mixkit-sci-fi-click-900.mp3");
-    const replyAudio = new Audio("/sounds/mixkit-sci-fi-confirmation-914.mp3");
-    sendAudio.preload = "auto";
-    replyAudio.preload = "auto";
-    sendSound.current = sendAudio;
-    replySound.current = replyAudio;
 
-    const unlockAudio = () => {
-      [sendAudio, replyAudio].forEach((audio) => {
-        audio.play().then(() => audio.pause()).catch(() => {});
-      });
-      window.removeEventListener("click", unlockAudio);
-    };
-    window.addEventListener("click", unlockAudio);
-    return () => window.removeEventListener("click", unlockAudio);
-  }, []);
+
+
+
+  // const generateResponse... (removed)
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -82,40 +68,38 @@ const Chatbot: React.FC = () => {
 
     const userMsg: Message = { role: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
-    if (soundEnabled) sendSound.current?.play().catch(() => {});
+
+    // Play Send Sound
+    if (soundEnabled) {
+      const audio = new Audio("/mixkit-sci-fi-click-900.mp3");
+      audio.play().catch((e) => console.log("Audio play failed", e));
+    }
+
     setInput("");
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "https://pewjsotrdtrpjkhjptdh.functions.supabase.co/ai-chat",
-        { message: input },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-        }
-      );
+      const { data, error } = await supabase.functions.invoke("ai-chat", {
+        body: { message: userMsg.text },
+      });
 
-      await new Promise((r) => setTimeout(r, 700)); // typing delay
-      const botMsg: Message = { role: "bot", text: res.data.reply };
+      if (error) throw error;
+
+      const botMsg: Message = { role: "bot", text: data.reply };
+
       setMessages((prev) => [...prev, botMsg]);
-      if (soundEnabled) replySound.current?.play().catch(() => {});
-    } catch (err: any) {
-      console.error(err);
-      if (err.response?.status === 429) {
-        setMessages((prev) => [
-          ...prev,
-          { role: "bot", text: "⚠️ You’re sending messages too fast. Please wait a few seconds." },
-        ]);
-      } else {
-        setMessages((prev) => [
-          ...prev,
-          { role: "bot", text: "❌ Sorry, I couldn’t connect to the AI service. Please try again." },
-        ]);
+
+      // Play Reply Sound
+      if (soundEnabled) {
+        const audio = new Audio("/mixkit-sci-fi-confirmation-914.mp3");
+        audio.play().catch((e) => console.log("Audio play failed", e));
       }
+    } catch (err) {
+      console.error("AI Error:", err);
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "❌ Sorry, I'm having trouble connecting right now." },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -138,6 +122,7 @@ const Chatbot: React.FC = () => {
           elevation={6}
           sx={{
             position: "fixed",
+            zIndex: 2000,
             bottom: 90,
             right: 24,
             width: 360,

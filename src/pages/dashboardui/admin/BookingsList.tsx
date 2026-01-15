@@ -14,9 +14,13 @@ import {
   TextField,
   Stack,
   Avatar,
+  Chip,
+  InputAdornment,
 } from "@mui/material";
 import { supabase } from "../../../lib/supabase";
 import toast from "react-hot-toast";
+import SearchIcon from "@mui/icons-material/Search";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface Booking {
   id: number;
@@ -27,7 +31,7 @@ interface Booking {
   flight_id: string;
   seat_number: string;
   booking_id: string;
-  payment_status: string;
+  payment_status: "success" | "failed" | "pending";
   flights?: {
     id: string;
     origin: string;
@@ -73,7 +77,7 @@ const AllBookings: React.FC = () => {
 
       if (error) throw error;
 
-      setBookings(data || []);
+      setBookings(data as Booking[] || []);
     } catch (err) {
       console.error("❌ Error fetching bookings:", err);
     } finally {
@@ -117,114 +121,197 @@ const AllBookings: React.FC = () => {
       .includes(search.toLowerCase())
   );
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "success":
+        return "success";
+      case "failed":
+        return "error";
+      case "pending":
+        return "warning";
+      default:
+        return "default";
+    }
+  };
+
   return (
     <Box p={4}>
-      <Typography variant="h4" gutterBottom color="primary">
-        ✈️ All Bookings
-      </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        <Typography variant="h4" fontWeight="bold" sx={{ color: "#333" }}>
+          🎟️ Booking Management
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={fetchAllBookings}
+          sx={{
+            bgcolor: "#000",
+            color: "#FFD700",
+            fontWeight: "bold",
+            borderRadius: "20px",
+            "&:hover": { bgcolor: "#333" },
+          }}
+        >
+          Refresh Data
+        </Button>
+      </Box>
 
-      {/* Search + Refresh */}
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} mb={3}>
+      {/* Search Bar */}
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          mb: 4,
+          borderRadius: 4,
+          border: "1px solid #eee",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <TextField
-          label="Search by Name / User ID / Flight"
-          variant="outlined"
+          placeholder="Search by Passenger, User ID, or Flight..."
+          variant="standard"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           fullWidth
+          InputProps={{
+            disableUnderline: true,
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "#ccc", mr: 1 }} />
+              </InputAdornment>
+            ),
+          }}
         />
-        <Button variant="contained" color="primary" onClick={fetchAllBookings}>
-          Refresh
-        </Button>
-      </Stack>
+      </Paper>
 
       {/* Loading */}
       {loading ? (
         <Box textAlign="center" mt={5}>
-          <CircularProgress />
+          <CircularProgress sx={{ color: "#FFD700" }} />
           <Typography mt={2}>Loading bookings...</Typography>
         </Box>
       ) : (
-        <TableContainer component={Paper} elevation={4}>
+        <TableContainer
+          component={Paper}
+          elevation={0}
+          sx={{
+            borderRadius: 4,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+            border: "1px solid #f0f0f0",
+            overflow: "hidden",
+          }}
+        >
           <Table>
-            <TableHead sx={{ backgroundColor: "#b71c1c" }}>
+            <TableHead sx={{ backgroundColor: "#000" }}>
               <TableRow>
-                <TableCell sx={{ color: "white" }}>#</TableCell>
-                <TableCell sx={{ color: "white" }}>User</TableCell>
-                <TableCell sx={{ color: "white" }}>Passenger</TableCell>
-                <TableCell sx={{ color: "white" }}>Gender</TableCell>
-                <TableCell sx={{ color: "white" }}>Age</TableCell>
-                <TableCell sx={{ color: "white" }}>Flight ID</TableCell>
-                <TableCell sx={{ color: "white" }}>Route</TableCell>
-                <TableCell sx={{ color: "white" }}>Departure</TableCell>
-                <TableCell sx={{ color: "white" }}>Seat</TableCell>
-                <TableCell sx={{ color: "white" }}>Payment</TableCell>
-                <TableCell sx={{ color: "white" }}>Booking ID</TableCell>
-                <TableCell sx={{ color: "white" }}>Action</TableCell>
+                {[
+                  "#",
+                  "User",
+                  "Passenger",
+                  "Gender",
+                  "Age",
+                  "Flight ID",
+                  "Route",
+                  "Departure",
+                  "Seat",
+                  "Payment",
+                  "Booking ID",
+                  "Action",
+                ].map((head) => (
+                  <TableCell
+                    key={head}
+                    sx={{ color: "#FFD700", fontWeight: "bold", borderBottom: "none" }}
+                  >
+                    {head}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
 
             <TableBody>
               {filteredBookings.length > 0 ? (
                 filteredBookings.map((b, i) => (
-                  <TableRow key={b.id}>
+                  <TableRow
+                    key={b.id}
+                    sx={{
+                      "&:hover": { bgcolor: "rgba(255, 215, 0, 0.05)" },
+                      borderBottom: "1px solid #f0f0f0",
+                    }}
+                  >
                     <TableCell>{i + 1}</TableCell>
 
                     {/* User */}
                     <TableCell>
                       <Stack direction="row" alignItems="center" spacing={1}>
-                        <Avatar sx={{ bgcolor: "#b71c1c" }}>
+                        <Avatar
+                          sx={{
+                            bgcolor: "#fff",
+                            color: "#000",
+                            border: "1px solid #ddd",
+                            width: 30,
+                            height: 30,
+                            fontSize: 14,
+                            fontWeight: "bold",
+                          }}
+                        >
                           {b.passenger_name.charAt(0).toUpperCase()}
                         </Avatar>
-                        <Typography variant="body2">{b.user_id}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {b.user_id?.substring(0, 8)}...
+                        </Typography>
                       </Stack>
                     </TableCell>
 
-                    <TableCell>{b.passenger_name}</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>{b.passenger_name}</TableCell>
                     <TableCell>{b.passenger_gender}</TableCell>
                     <TableCell>{b.passenger_age}</TableCell>
-                    <TableCell>{b.flight_id}</TableCell>
+                    <TableCell sx={{ fontFamily: "monospace" }}>
+                      {b.flight_id?.substring(0, 8)}
+                    </TableCell>
 
                     <TableCell>
                       {b.flights
-                        ? `${b.flights.origin} → ${b.flights.destination}`
+                        ? `${b.flights.origin} ➝ ${b.flights.destination}`
                         : "N/A"}
                     </TableCell>
 
                     <TableCell>
                       {b.flights
-                        ? new Date(b.flights.departure_time).toLocaleString()
+                        ? new Date(b.flights.departure_time).toLocaleDateString()
                         : "N/A"}
                     </TableCell>
 
-                    <TableCell>{b.seat_number}</TableCell>
-
-                    <TableCell
-                      sx={{
-                        fontWeight: "bold",
-                        color:
-                          b.payment_status === "success"
-                            ? "green"
-                            : b.payment_status === "failed"
-                            ? "red"
-                            : "orange",
-                      }}
-                    >
-                      {b.payment_status.toUpperCase()}
+                    <TableCell>
+                      <Chip
+                        label={b.seat_number}
+                        size="small"
+                        sx={{ bgcolor: "#eee", fontWeight: "bold" }}
+                      />
                     </TableCell>
 
-                    <TableCell>{b.booking_id || "-"}</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={b.payment_status?.toUpperCase()}
+                        color={getStatusColor(b.payment_status) as any}
+                        size="small"
+                        variant="filled"
+                        sx={{ fontWeight: "bold", minWidth: 80 }}
+                      />
+                    </TableCell>
+
+                    <TableCell sx={{ fontFamily: "monospace", fontSize: 12 }}>
+                      {b.booking_id || "-"}
+                    </TableCell>
 
                     {/* ❌ CANCEL BUTTON */}
                     <TableCell>
                       <Button
-                        variant="contained"
+                        variant="outlined"
+                        color="error"
                         size="small"
-                        sx={{
-                          bgcolor: "red",
-                          "&:hover": { bgcolor: "#d50000" },
-                          borderRadius: 2,
-                        }}
+                        startIcon={<CancelIcon />}
                         onClick={() => handleCancelBooking(b.id)}
+                        sx={{ borderRadius: 20, textTransform: "none" }}
                       >
                         Cancel
                       </Button>
@@ -233,8 +320,10 @@ const AllBookings: React.FC = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={12} align="center">
-                    😕 No bookings found
+                  <TableCell colSpan={12} align="center" sx={{ py: 5 }}>
+                    <Typography variant="h6" color="text.secondary">
+                      😕 No bookings found
+                    </Typography>
                   </TableCell>
                 </TableRow>
               )}

@@ -194,18 +194,54 @@ const Navbar: React.FC = () => {
 
       <Box sx={{ p: 2 }}>
         {user ? (
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={handleLogout}
-            sx={{
-              color: "#FFD700",
-              borderColor: "#FFD700",
-              "&:hover": { bgcolor: "#FFD700", color: "#000" },
-            }}
-          >
-            Logout
-          </Button>
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mb: 3,
+                mt: 1,
+              }}
+            >
+              <Avatar
+                sx={{
+                  bgcolor: "#FFD700",
+                  color: "#000",
+                  width: 60,
+                  height: 60,
+                  fontWeight: 700,
+                  mb: 1,
+                }}
+              >
+                {avatarLetter}
+              </Avatar>
+              <Typography
+                sx={{ color: "#FFD700", fontWeight: 600, textAlign: "center" }}
+              >
+                {displayedName}
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ color: "rgba(255,215,0,0.7)", textAlign: "center" }}
+              >
+                {user.role === "admin" ? "Administrator" : "User"}
+              </Typography>
+            </Box>
+
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={handleLogout}
+              sx={{
+                color: "#FFD700",
+                borderColor: "#FFD700",
+                "&:hover": { bgcolor: "#FFD700", color: "#000" },
+              }}
+            >
+              Logout
+            </Button>
+          </>
         ) : (
           <>
             {/* ✅ UPDATED: close drawer, then navigate */}

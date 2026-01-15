@@ -1,7 +1,5 @@
 {
-  "imports": {
-    "razorpay": "npm:razorpay"
-  },
+  "imports": {},
   "tasks": {},
   "compilerOptions": {
     "strict": true

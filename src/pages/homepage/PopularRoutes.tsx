@@ -9,7 +9,7 @@ import {
   keyframes,
 } from "@mui/material";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 
 // 🏙 Example cities
@@ -24,7 +24,7 @@ import dubaiimg from "../../assets/dubaiimg.jpg";
 interface Route {
   city: string;
   image: string;
-  url:string;
+  url: string;
 }
 
 const routes: Route[] = [
@@ -143,9 +143,8 @@ const PopularRoutes: React.FC = () => {
             borderRadius: "50%",
             backgroundColor: "rgba(255,215,0,0.4)",
             filter: "blur(1px)",
-            animation: `${floatParticle} ${
-              5 + Math.random() * 5
-            }s ease-in-out infinite`,
+            animation: `${floatParticle} ${5 + Math.random() * 5
+              }s ease-in-out infinite`,
             animationDelay: `${Math.random() * 4}s`,
             zIndex: 1,
           }}
@@ -177,8 +176,8 @@ const PopularRoutes: React.FC = () => {
         sx={{ position: "relative", zIndex: 2 }}
       >
         {routes.map((route, index) => (
-          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <Link to={route.url} style={{ textDecoration: "none" }}>
+          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+            <a href={route.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
               <Card
                 sx={{
                   borderRadius: 3,
@@ -223,7 +222,7 @@ const PopularRoutes: React.FC = () => {
                   </Typography>
                 </CardContent>
               </Card>
-            </Link>
+            </a>
           </Grid>
         ))}
       </Grid>

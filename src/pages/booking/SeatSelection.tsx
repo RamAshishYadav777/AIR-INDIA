@@ -33,7 +33,6 @@ const SeatSelection: React.FC = () => {
   // ⭐ Save flightId to Redux
   useEffect(() => {
     if (flightId) {
-      console.log("🎯 Flight ID saved:", flightId);
       dispatch(setFlightId(flightId));
     }
   }, [flightId, dispatch]);
@@ -60,8 +59,8 @@ const SeatSelection: React.FC = () => {
           seatLetter === "A" || seatLetter === "F"
             ? "window"
             : seatLetter === "C" || seatLetter === "D"
-            ? "aisle"
-            : "middle";
+              ? "aisle"
+              : "middle";
 
         seatList.push({
           id: `${rowNumber}${seatLetter}`,
@@ -138,11 +137,14 @@ const SeatSelection: React.FC = () => {
           {rows.map((rowNum) => (
             <Grid
               key={rowNum}
-              size={{ xs: 12 }}
+              item
+              xs={12}
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 gap: "10px",
+                overflowX: "auto",
+                pb: 1, // scrollbar padding
               }}
             >
               {/* Left Side */}

@@ -196,7 +196,7 @@ export default function OurHeroes() {
       >
         <Grid container spacing={4} justifyContent="center">
           {crew.map((c, i) => (
-            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
+            <Grid item xs={12} sm={6} md={3} key={i}>
               <motion.div variants={cardVariants}>
                 <Paper
                   component={motion.div}
