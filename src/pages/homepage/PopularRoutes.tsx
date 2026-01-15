@@ -176,7 +176,7 @@ const PopularRoutes: React.FC = () => {
         sx={{ position: "relative", zIndex: 2 }}
       >
         {routes.map((route, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <a href={route.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
               <Card
                 sx={{

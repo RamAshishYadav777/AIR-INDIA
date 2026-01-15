@@ -137,8 +137,7 @@ const SeatSelection: React.FC = () => {
           {rows.map((rowNum) => (
             <Grid
               key={rowNum}
-              item
-              xs={12}
+              size={{ xs: 12 }}
               sx={{
                 display: "flex",
                 justifyContent: "center",

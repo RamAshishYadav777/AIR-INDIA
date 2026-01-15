@@ -79,7 +79,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ data }) => {
                 border: "none",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
               }}
-              formatter={(value: number) => [`₹${value.toLocaleString()}`, "Revenue"]}
+              formatter={(value: any) => [`₹${Number(value || 0).toLocaleString()}`, "Revenue"]}
             />
             <Area
               type="monotone"
