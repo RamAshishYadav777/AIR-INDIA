@@ -143,7 +143,14 @@ const SearchFlights: React.FC = () => {
       // }
 
       if (departureDate) {
-        query = query.eq("flight_date", departureDate);
+        const start = new Date(departureDate);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(departureDate);
+        end.setHours(23, 59, 59, 999);
+
+        query = query
+          .gte("departure_time", start.toISOString())
+          .lte("departure_time", end.toISOString());
       }
 
 

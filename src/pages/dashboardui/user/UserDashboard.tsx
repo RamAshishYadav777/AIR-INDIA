@@ -58,7 +58,6 @@ interface Booking {
     flight_number: string;
     origin: string;
     destination: string;
-    flight_date: string;
     departure_time: string;
     arrival_time: string;
   };
