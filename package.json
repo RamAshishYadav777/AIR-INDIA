@@ -1,0 +1,14 @@
+{
+  "name": "air-india-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build-client": "cd client && npm run build",
+    "start-server": "cd server && npm start",
+    "develop": "npx concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
