@@ -1,0 +1,18 @@
+# Root level node_modules
+node_modules/
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large log files
+logs/
+*.log
+
+# Docker
+.docker/
+docker-compose*.override.yml
