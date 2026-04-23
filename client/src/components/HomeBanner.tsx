@@ -61,7 +61,7 @@ const zoomIn = keyframes`
 
 /* ---------------- 3D PARTICLES ---------------- */
 
-const GoldParticles: React.FC<{ count?: number }> = ({ count = 100 }) => {
+const GoldParticles: React.FC<{ count?: number }> = ({ count = 40 }) => {
   const ref = React.useRef<THREE.Points | null>(null);
 
   const positions = useMemo(() => {
@@ -103,9 +103,9 @@ const HomeBanner: React.FC = () => {
 
 
 
-  const images = useMemo(() => [AI1, AI2, AI3, AI4, AI5, AI6, AI7, AI8, AIANB], []);
+  const images = useMemo(() => [AI1, AI2, AI3, AI4, AI5, AI6], []);
   const videos = useMemo(() => [
-    an1, an2, an3, delhi, an4, T1, london, T2, T3, mumbai, T4, T6, dubai, AI9, ar1, ar2, ar3
+    an1, an2, an3, delhi, an4, london, dubai, AI9
   ], []);
 
   const captions = [
@@ -114,14 +114,11 @@ const HomeBanner: React.FC = () => {
     { main: "Maharaja Reimagined", sub: "Redefining Hospitality" },
     { main: "Soar with Elegance", sub: "Connecting Global Cities" },
     { main: "Signature Collection", sub: "New Fleet Awaits" },
-    { main: "Timeless Journeys", sub: "Crafting Memories" },
-    { main: "Next Gen Aviation", sub: "Sustainable Future" },
-    { main: "Global Reach", sub: "Modern Connectivity" },
-    { main: "Proudly Indian", sub: "Heart of Aviation" },
+    { main: "Timeless Journeys", sub: "Crafting Memories" }
   ];
 
   const cityCaptions = [
-    "New York", "International Dining", "Paris", "Delhi", "London", "Rome", "Dubai", "Toronto", "Sydney", "Mumbai", "Singapore", "Berlin", "Tokyo", "Milan", "San Francisco", "Barcelona", "Ahmedabad"
+    "New York", "International Dining", "Paris", "Delhi", "London", "Rome", "Dubai", "Singapore"
   ];
 
   const imageSettings: Settings = {
@@ -175,7 +172,7 @@ const HomeBanner: React.FC = () => {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           style={{
             width: "100%",
             height: "100%",
@@ -213,11 +210,12 @@ const HomeBanner: React.FC = () => {
       {/* 3D Particles Layer */}
       <Box sx={{ position: "absolute", inset: 0, zIndex: 5, pointerEvents: "none" }}>
         <Canvas 
+          dpr={[1, 1.5]}
           gl={{ antialias: false, powerPreference: "high-performance" }}
           camera={{ position: [0, 0, 15], fov: 45 }}
         >
           <GoldParticles />
-          <Stars radius={100} depth={50} count={1000} factor={4} saturation={0} fade speed={0.5} />
+          <Stars radius={100} depth={50} count={300} factor={4} saturation={0} fade speed={0.5} />
         </Canvas>
       </Box>
 
