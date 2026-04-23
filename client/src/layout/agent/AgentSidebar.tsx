@@ -35,7 +35,6 @@ const AgentSidebar: React.FC<AgentSidebarProps> = ({ open, onClose }) => {
     const menuItems = [
         { text: "Home", icon: <HomeIcon />, path: "/" },
         { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard/agent" },
-        { text: "Check-In", icon: <CheckCircleOutlineIcon />, path: "/checkin" },
         { text: "Bookings", icon: <GroupIcon />, path: "/dashboard/agent/bookings" },
     ];
 
