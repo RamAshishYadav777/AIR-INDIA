@@ -3,12 +3,10 @@ import axios from 'axios';
 const getBaseURL = () => {
     let url = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     
-    // Safety check: Ensure URL doesn't have a trailing slash before adding /api
     if (url.endsWith('/')) {
         url = url.slice(0, -1);
     }
     
-    // Force the /api suffix if it's missing
     if (!url.endsWith('/api')) {
         url += '/api';
     }
@@ -22,8 +20,6 @@ const api = axios.create({
         'Content-Type': 'application/json',
     },
 });
-
-console.log("✈️ FINAL Axios Base URL being used:", api.defaults.baseURL);
 
 api.interceptors.request.use(
     (config) => {

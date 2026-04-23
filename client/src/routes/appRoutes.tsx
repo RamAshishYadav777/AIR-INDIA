@@ -12,7 +12,7 @@ import FlightListPage from "../pages/dashboardui/admin/FlightListPage";
 const OurHeroes = lazy(() => import("../components/OurHeroes"));
 
 
-// 🌍 Public Pages
+// Public Pages
 const Home = lazy(() => import("../pages/Home"));
 const Flights = lazy(() => import("../pages/Flights"));
 const FlightDetails = lazy(() => import("../pages/FlightDetails"));
@@ -21,7 +21,7 @@ const CheckIn = lazy(() => import("../pages/CheckIn"));
 const Profile = lazy(() => import("../pages/Profile"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
-// 🔐 Auth Pages (Express/MongoDB-based)
+// Auth Routes
 const Login = lazy(() => import("../pages/auth/user/Login"));
 const Signup = lazy(() => import("../pages/auth/user/Signup"));
 const AdminLogin = lazy(() => import("../pages/auth/admin/AdminLogin"));
@@ -29,7 +29,7 @@ const AdminSignup = lazy(() => import("../pages/auth/admin/AdminSignup"));
 const AgentLogin = lazy(() => import("../pages/auth/agent/AgentLogin"));
 const AgentSignup = lazy(() => import("../pages/auth/agent/AgentSignup"));
 
-// 🧾 Booking Flow Pages
+// Booking Flow
 const Booking = lazy(() => import("../pages/booking/Booking"));
 const SeatSelection = lazy(() => import("../pages/booking/SeatSelection"));
 const PassengerForm = lazy(() => import("../pages/booking/BookingForm"));
@@ -37,21 +37,21 @@ const BaggageSelection = lazy(() => import("../pages/booking/BaggageSelection"))
 const Payment = lazy(() => import("../pages/booking/Payment"));
 const Confirmation = lazy(() => import("../pages/booking/Confirmation"));
 
-// 🧭 Dashboard Pages
+// Dashboard Routes
 const UserDashboard = lazy(() => import("../pages/dashboardui/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("../pages/dashboardui/admin/AdminDashboard"));
 const BookingsList = lazy(() => import("../pages/dashboardui/admin/BookingsList"));
 const Analytics = lazy(() => import("../pages/dashboardui/admin/Analytics"));
 const AddFlightPage = lazy(() => import("../pages/dashboardui/admin/AddFlightPage"));
 
-// 🕵️ Agent Pages
+// Agent Portal
 const AgentDashboard = lazy(() => import("../pages/dashboardui/agent/AgentDashboard"));
 const AgentLayout = lazy(() => import("../layout/agent/AgentLayout"));
 
-// ✈️ NEW — Check-In Dashboard Page
+// Check-In Portal
 // const CheckInDashboard = lazy(() => import("../components/CheckIn"));
 
-// 🌀 Suspense Wrapper
+// Suspense Helper
 const withSuspense = (element: React.ReactNode) => (
   <Suspense fallback={<LoadingScreen />}>
     <ErrorBoundary>{element}</ErrorBoundary>
@@ -60,9 +60,9 @@ const withSuspense = (element: React.ReactNode) => (
 
 
 
-// 🧩 Router Configuration
+// Router Config
 const router = createBrowserRouter([
-  // 🌍 Public + User Pages
+  // Main Routes
   {
     path: "/",
     element: <MainLayout />,
@@ -74,10 +74,10 @@ const router = createBrowserRouter([
       { path: "our-heroes", element: withSuspense(<OurHeroes />) },
 
 
-      // ✈️ Static Seat Map
+      // Static Seat Map
       { path: "seatmap", element: withSuspense(<FlightDetails />) },
 
-      // ✈️ NEW Check-In Dashboard (user must be logged in)
+      // Check-In Dashboard
       // {
       //   path: "checkin-dashboard",
       //   element: withSuspense(
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
       // { path: "tracking", element: withSuspense(<Tracking />) },
       { path: "profile", element: withSuspense(<Profile />) },
 
-      // 🔐 Auth Pages
+      // Auth Routes
       { path: "login", element: withSuspense(<Login />) },
       { path: "signup", element: withSuspense(<Signup />) },
       { path: "admin/login", element: withSuspense(<AdminLogin />) },
@@ -101,7 +101,7 @@ const router = createBrowserRouter([
       { path: "agent/login", element: withSuspense(<AgentLogin />) },
       { path: "agent/signup", element: withSuspense(<AgentSignup />) },
 
-      // 🧾 Booking Flow
+      // Booking Flow
       {
         path: "booking",
         children: [
@@ -158,7 +158,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // 👤 User Dashboard
+  // User Dashboard
   {
     path: "/dashboard/user",
     element: withSuspense(
@@ -169,7 +169,7 @@ const router = createBrowserRouter([
     children: [{ index: true, element: withSuspense(<UserDashboard />) }],
   },
 
-  // 🛠 Admin Dashboard
+  // Admin Dashboard
   {
     path: "/dashboard/admin",
     element: withSuspense(
@@ -222,7 +222,7 @@ const router = createBrowserRouter([
     ),
   },
 
-  // 🕵️ Agent Dashboard
+  // Agent Dashboard
   {
     path: "/dashboard/agent",
     element: withSuspense(
@@ -244,7 +244,7 @@ const router = createBrowserRouter([
     ),
   },
 
-  // 🚫 404
+  // Error Handle
   { path: "*", element: withSuspense(<NotFound />) },
 ]);
 

@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../../lib/axios";
 
-// ===============================
-// 📦 Types
-// ===============================
+// -------------------------------
+// Types
+// -------------------------------
 interface ExtendedUser {
   id: string;
   email?: string;
@@ -27,9 +27,9 @@ const initialState: AuthState = {
   token: localStorage.getItem('token'),
 };
 
-// ===============================
-// 🔄 Load User (from token)
-// ===============================
+// -------------------------------
+// Async Thunks
+// -------------------------------
 // Start of Selection
 export const loadUser = createAsyncThunk(
   "auth/loadUser",
@@ -39,7 +39,7 @@ export const loadUser = createAsyncThunk(
       if (!token) return null;
 
       const { data } = await api.get('/auth/me');
-      return data.data; // User object from new "data" wrapper
+      return data.data; 
     } catch (err: any) {
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
@@ -48,7 +48,7 @@ export const loadUser = createAsyncThunk(
   }
 );
 
-// 🔐 Login User
+// Login User
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (
@@ -57,7 +57,6 @@ export const loginUser = createAsyncThunk(
   ) => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
-      // New structure: data: { success: true, data: { accessToken, refreshToken, user } }
       localStorage.setItem('token', data.data.accessToken);
       localStorage.setItem('refreshToken', data.data.refreshToken);
       return data.data; 
@@ -67,7 +66,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// 🧾 Signup User
+// Signup User
 export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async (
@@ -95,7 +94,7 @@ export const signupUser = createAsyncThunk(
   }
 );
 
-// 🧾 Refresh Token
+// Refresh Token
 export const refreshUserToken = createAsyncThunk(
   "auth/refreshToken",
   async (_, { rejectWithValue }) => {
@@ -114,7 +113,7 @@ export const refreshUserToken = createAsyncThunk(
   }
 );
 
-// 🚪 Logout User
+// Logout User
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, { rejectWithValue }) => {
@@ -132,9 +131,9 @@ export const logoutUser = createAsyncThunk(
 );
 
 
-// ===============================
-// 🧩 Slice
-// ===============================
+// -------------------------------
+// Slice Definition
+// -------------------------------
 const authSlice = createSlice({
   name: "auth",
   initialState,

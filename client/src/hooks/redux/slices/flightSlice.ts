@@ -31,7 +31,7 @@ const initialState: FlightState = {
   error: null,
 };
 
-// ✅ 1. Fetch all flights
+// Fetch all flights
 export const fetchFlights = createAsyncThunk<Flight[]>(
   "flights/fetchFlights",
   async () => {
@@ -40,61 +40,57 @@ export const fetchFlights = createAsyncThunk<Flight[]>(
       // data.data is the array of flights
       return data.data.map((f: any) => ({ ...f, id: f._id }));
     } catch (error: any) {
-      console.error("❌ Error fetching flights:", error.message);
       throw new Error(error.response?.data?.message || "Failed to fetch flights");
     }
   }
 );
 
-// ✅ 2. Add a new flight
+// Add a new flight
 export const addFlight = createAsyncThunk<
   Flight,
   Omit<Flight, "_id" | "id" | "status" | "created_at" | "is_boosted" | "offer_text">
 >("flights/addFlight", async (flightData) => {
   try {
     const { data } = await api.post('/flights', flightData);
-    toast.success("✈️ Flight added successfully!");
+    toast.success("Flight added successfully!");
     const flight = data.data;
     return { ...flight, id: flight._id };
   } catch (error: any) {
-    console.error("❌ Error adding flight:", error.message);
     throw new Error(error.response?.data?.message || "Failed to add flight");
   }
 });
 
-// ✅ 2.5 Update a flight
+// Update a flight
 export const updateFlight = createAsyncThunk<
   Flight,
   { id: string; data: Partial<Flight> }
 >("flights/updateFlight", async ({ id, data: updateData }) => {
   try {
     const { data } = await api.put(`/flights/${id}`, updateData);
-    toast.success("✈️ Flight updated successfully!");
+    toast.success("Flight updated successfully!");
     const flight = data.data;
     return { ...flight, id: flight._id };
   } catch (error: any) {
-    console.error("❌ Error updating flight:", error.message);
     throw new Error(error.response?.data?.message || "Failed to update flight");
   }
 });
 
 
-// ✅ 3. Delete a flight
+// Delete a flight
 export const deleteFlight = createAsyncThunk<string, string>(
   "flights/deleteFlight",
   async (flightId) => {
     try {
       await api.delete(`/flights/${flightId}`);
-      toast.success("🗑️ Flight deleted successfully!");
+      toast.success("Flight deleted successfully!");
       return flightId;
     } catch (error: any) {
-      console.error("❌ Error deleting flight:", error.message);
       throw new Error(error.response?.data?.message || "Failed to delete flight");
     }
   }
 );
 
-// ✅ 4. Slice
+// Slice definition
 const flightSlice = createSlice({
   name: "flights",
   initialState,
