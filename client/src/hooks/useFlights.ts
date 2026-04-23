@@ -20,8 +20,14 @@ interface FlightSearchParams {
 
 const fetchFlights = async (params?: FlightSearchParams): Promise<Flight[]> => {
     try {
-        const response = await api.get('/flights', { params });
+        const targetUrl = '/flights';
+        console.log(`🌐 Fetching flights from: ${api.defaults.baseURL}${targetUrl}`);
         
+        const response = await api.get(targetUrl, { params });
+        
+        console.log("📦 API Response Status:", response.status);
+        console.log("📦 API Data Received:", response.data);
+
         // Handle both { success: true, data: [...] } and raw [...] responses
         let flightData = [];
         if (response.data && response.data.success && Array.isArray(response.data.data)) {
@@ -32,12 +38,17 @@ const fetchFlights = async (params?: FlightSearchParams): Promise<Flight[]> => {
             flightData = response.data.flights;
         }
 
+        console.log(`✅ Parsed ${flightData.length} flights.`);
+
         return flightData.map((f: any) => ({
             ...f,
             id: f._id || f.id
         }));
-    } catch (error) {
-        console.error("fetchFlights error:", error);
+    } catch (error: any) {
+        console.error("❌ fetchFlights ERROR:", error.message);
+        if (error.response) {
+            console.error("❌ Server Error Data:", error.response.data);
+        }
         return [];
     }
 };
