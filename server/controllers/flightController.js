@@ -53,6 +53,9 @@ class FlightController {
     // @route   POST /api/flights
     async createFlight(req, res) {
         try {
+            if (req.body.price > 45000) {
+                return res.status(400).json({ success: false, message: 'Price cannot exceed ₹45,000' });
+            }
             const flight = new Flight(req.body);
             const newFlight = await flight.save();
             res.status(201).json({ 
@@ -69,6 +72,9 @@ class FlightController {
     // @route   PUT /api/flights/:id
     async updateFlight(req, res) {
         try {
+            if (req.body.price > 45000) {
+                return res.status(400).json({ success: false, message: 'Price cannot exceed ₹45,000' });
+            }
             const flight = await Flight.findById(req.params.id);
             if (!flight) {
                 return res.status(404).json({ success: false, message: 'Flight not found' });

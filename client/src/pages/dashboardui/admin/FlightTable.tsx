@@ -185,6 +185,10 @@ const FlightTable: React.FC<FlightTableProps> = ({ showTitle = true }) => {
       toast.error("Valid price is required");
       return false;
     }
+    if (Number(form.price) > 45000) {
+      toast.error("Flight price cannot exceed ₹45,000 to ensure payment gateway compatibility");
+      return false;
+    }
     return true;
   };
 
