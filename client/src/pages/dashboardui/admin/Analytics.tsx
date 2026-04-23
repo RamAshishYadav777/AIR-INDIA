@@ -73,8 +73,8 @@ const Analytics = () => {
           api.get("/bookings/admin/stats"),
           api.get("/bookings/admin/route-revenue")
         ]);
-        setStats(statsRes.data);
-        setRouteRevenue(Array.isArray(revenueRes.data) ? revenueRes.data : []);
+        setStats(statsRes.data.data);
+        setRouteRevenue(Array.isArray(revenueRes.data.data) ? revenueRes.data.data : []);
       } catch (err) {
         console.error("Error fetching analytics data:", err);
       } finally {
