@@ -55,13 +55,19 @@ const Payment: React.FC = () => {
         return;
       }
 
-      // 2. Create Booking
+      // Generate a clean 7-character Booking ID
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let genBookingId = '';
+      for (let i = 0; i < 7; i++) {
+        genBookingId += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      
       const userId = (user as any).id || (user as any)._id; // Support both naming conventions
 
       const bookingData = {
         user_id: userId,
         flight_id: booking.flightId,
-        booking_id: response.razorpay_order_id,
+        booking_id: genBookingId,
         total_amount: amountToPay,
         payment_status: "completed",
         razorpay_payment_id: response.razorpay_payment_id,

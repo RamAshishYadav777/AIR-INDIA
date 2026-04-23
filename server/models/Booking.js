@@ -26,12 +26,12 @@ const bookingSchema = new mongoose.Schema({
     razorpay_payment_id: { type: String }
 }, { timestamps: true });
 
-// Pre-save hook to generate 6-digit PNR
+// Pre-save hook to generate 7-character alphanumeric PNR
 bookingSchema.pre('save', function (next) {
     if (!this.pnr) {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let result = '';
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 7; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         this.pnr = result;
