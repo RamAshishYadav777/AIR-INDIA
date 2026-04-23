@@ -10,7 +10,7 @@ import {
   Plane,
   ArrowRight
 } from "lucide-react";
-import { useFlights } from "../hooks/useFlights";
+import { Flight, useFlights } from "../hooks/useFlights";
 
 const CITY_IMAGES: Record<string, string> = {
   "London": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=600",
@@ -28,12 +28,12 @@ const CITY_IMAGES: Record<string, string> = {
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&q=80&w=600";
 
 const Home: React.FC = () => {
-  const { flights } = useFlights();
+  const { data: flights = [] } = useFlights();
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
 
   // Filter for boosted flights or top 3 if none boosted
-  const boostedFlights = flights.filter(f => f.is_boosted).slice(0, 3);
+  const boostedFlights = flights.filter((f: any) => (f as any).is_boosted).slice(0, 3);
   const displayFlights = boostedFlights.length > 0 ? boostedFlights : flights.slice(0, 3);
 
   return (
