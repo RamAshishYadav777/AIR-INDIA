@@ -1,3 +1,15 @@
+import React from "react";
+import HomeBanner from "../components/HomeBanner";
+import SearchFlights from "./SearchFlights";
+import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  ShieldCheck,
+  Globe,
+  Clock,
+  Star,
+  Plane,
+  ArrowRight
+} from "lucide-react";
 import { useFlights } from "../hooks/useFlights";
 
 const CITY_IMAGES: Record<string, string> = {
@@ -76,7 +88,7 @@ const Home: React.FC = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {displayFlights.map((flight, i) => (
+            {displayFlights.map((flight: any, i: number) => (
               <motion.div
                 key={flight._id}
                 initial={{ opacity: 0, scale: 0.9 }}
