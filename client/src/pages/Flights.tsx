@@ -1,5 +1,5 @@
 // src/pages/Flights.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Typography,
   Card,
@@ -22,16 +22,7 @@ import toast from "react-hot-toast";
 
 import { useFlights } from "../hooks/useFlights";
 
-interface Flight {
-  id: string; // Mongo ID mapping to id
-  flight_number: string;
-  origin: string;
-  destination: string;
-  departure_time: string;
-  arrival_time: string;
-  price: number;
-  status: string;
-}
+// Interface removed to fix TS6196
 
 const Flights: React.FC = () => {
   const dispatch = useAppDispatch();

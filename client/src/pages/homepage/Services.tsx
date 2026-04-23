@@ -8,7 +8,7 @@ import LiveTvIcon from "@mui/icons-material/LiveTv";
 interface Service {
   title: string;
   desc: string;
-  icon: React.ElementType;
+  icon: any;
   link: string;
 }
 

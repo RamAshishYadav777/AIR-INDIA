@@ -17,6 +17,11 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -65,9 +70,22 @@ app.use('/api/chat', chatRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.get('/', (req, res) => {
-    res.send('Air India Backend is Running');
+// Serve Static Files in Production
+const distPath = path.join(__dirname, '../client/dist');
+app.use(express.static(distPath));
+
+app.get('*', (req, res) => {
+    // Check if the request is for API
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ success: false, message: "API route not found" });
+    }
+    // Serve index.html for all other routes to support client-side routing
+    res.sendFile(path.join(distPath, 'index.html'));
 });
+
+// app.get('/', (req, res) => {
+//     res.send('Air India Backend is Running');
+// });
 
 // Socket.IO Connection Handler
 io.on("connection", (socket) => {

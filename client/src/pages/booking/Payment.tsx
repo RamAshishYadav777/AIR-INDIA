@@ -46,7 +46,7 @@ const Payment: React.FC = () => {
       };
 
       const { data: verifyRes } = await api.post("/payments/verify-payment", verifyPayload);
-      const verifyData = verifyRes.data;
+      // const verifyData = verifyRes.data; // removed unused
 
       if (!verifyRes.success) {
         alert("Payment verification failed! Please contact support.");

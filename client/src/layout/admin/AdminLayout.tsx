@@ -14,7 +14,7 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch(); // removed unused
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => setDrawerOpen((prev) => !prev);

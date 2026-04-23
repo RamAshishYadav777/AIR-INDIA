@@ -1,1 +1,0 @@
-import{j as r}from"./index-BcTb-Lbu.js";const e=()=>r.jsxs("div",{children:[r.jsx("h1",{children:"User Profile"}),r.jsx("p",{children:"Manage your personal information and bookings."})]});export{e as default};
