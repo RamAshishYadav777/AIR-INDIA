@@ -121,7 +121,7 @@ const HomeBanner: React.FC = () => {
   ];
 
   const cityCaptions = [
-    "New York", "Gourmet Dining", "Paris", "Delhi", "Paris", "Rome", "London", "Toronto", "Paris", "Mumbai", "Sydney", "Berlin", "Dubai", "Singapore", "Milan", "San Francisco", "Tokyo"
+    "New York", "International Dining", "Paris", "Delhi", "London", "Rome", "Dubai", "Toronto", "Sydney", "Mumbai", "Singapore", "Berlin", "Tokyo", "Milan", "San Francisco", "Barcelona", "Ahmedabad"
   ];
 
   const imageSettings: Settings = {
@@ -141,14 +141,13 @@ const HomeBanner: React.FC = () => {
   const videoSettings: Settings = {
     dots: false,
     infinite: true,
-    speed: 1500,
+    speed: 1000,
     autoplay: true,
-    autoplaySpeed: 7000,
+    autoplaySpeed: 6000,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
     fade: true,
-    lazyLoad: "progressive",
     beforeChange: (_c, n) => setVideoIndex(n),
   };
 
