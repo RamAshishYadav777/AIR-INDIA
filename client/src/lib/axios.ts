@@ -1,24 +1,32 @@
 import axios from 'axios';
 
+const getBaseURL = () => {
+    let url = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    
+    // Safety check: Ensure URL doesn't have a trailing slash before adding /api
+    if (url.endsWith('/')) {
+        url = url.slice(0, -1);
+    }
+    
+    // Force the /api suffix if it's missing
+    if (!url.endsWith('/api')) {
+        url += '/api';
+    }
+    
+    return url;
+};
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    baseURL: getBaseURL(),
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
-// Log the final base URL being used
-console.log("✈️ Axios Base URL:", api.defaults.baseURL);
+console.log("✈️ FINAL Axios Base URL being used:", api.defaults.baseURL);
 
-// Self-healing: if the URL doesn't end with /api, we handle it in the request
 api.interceptors.request.use(
     (config) => {
-        // Fix potential trailing slashes or missing /api
-        if (config.baseURL && !config.baseURL.endsWith('/api') && !config.url?.startsWith('/api')) {
-             // If baseURL is just the domain, we might need to be careful.
-             // But for this project, /api is the standard.
-        }
-
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
