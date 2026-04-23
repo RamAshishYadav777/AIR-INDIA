@@ -19,14 +19,27 @@ interface FlightSearchParams {
 }
 
 const fetchFlights = async (params?: FlightSearchParams): Promise<Flight[]> => {
-    const response = await api.get('/flights', { params });
-    // Backend returns { success: true, data: [...] }
-    const flightData = response.data.data || [];
-    
-    return flightData.map((f: any) => ({
-        ...f,
-        id: f._id || f.id
-    }));
+    try {
+        const response = await api.get('/flights', { params });
+        
+        // Handle both { success: true, data: [...] } and raw [...] responses
+        let flightData = [];
+        if (response.data && response.data.success && Array.isArray(response.data.data)) {
+            flightData = response.data.data;
+        } else if (Array.isArray(response.data)) {
+            flightData = response.data;
+        } else if (response.data && Array.isArray(response.data.flights)) {
+            flightData = response.data.flights;
+        }
+
+        return flightData.map((f: any) => ({
+            ...f,
+            id: f._id || f.id
+        }));
+    } catch (error) {
+        console.error("fetchFlights error:", error);
+        return [];
+    }
 };
 
 export const useFlights = (params?: FlightSearchParams) => {

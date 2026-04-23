@@ -23,6 +23,8 @@ class FlightController {
             const flights = await Flight.find(query).sort({ departure_time: 1 });
             const data = flights.map(f => this.formatFlight(f));
 
+            console.log(`🔍 [API] Found ${flights.length} flights for query:`, JSON.stringify(query));
+
             res.json({ 
                 success: true, 
                 count: flights.length, 
