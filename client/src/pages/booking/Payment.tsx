@@ -106,6 +106,11 @@ const Payment: React.FC = () => {
   };
 
   const handlePayment = async () => {
+    if (amountToPay >= 50000) {
+      alert("Transaction limit reached (₹50,000). Please reduce the number of passengers or choose a cheaper flight to proceed with Razorpay Test Mode.");
+      return;
+    }
+
     if (!user) {
       alert("Please login first.");
       navigate("/login");
