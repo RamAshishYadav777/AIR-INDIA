@@ -33,29 +33,30 @@ interface BookingDetails {
 const fetchBookingDetails = async (bookingId: string): Promise<BookingDetails> => {
     const isMongoId = /^[0-9a-fA-F]{24}$/.test(bookingId);
     const endpoint = isMongoId ? `/bookings/${bookingId}` : `/bookings/code/${bookingId}`;
-    const { data } = await api.get(endpoint);
-    console.log("Raw Booking Data from Server:", data);
+    const response = await api.get(endpoint);
+    const booking = response.data.data;
+    console.log("Raw Booking Data from Server:", booking);
 
     let passengers: Passenger[] = [];
     let flight: FlightDetails | null = null;
-    let pnr = data?.pnr || bookingId;
+    let pnr = booking?.pnr || bookingId;
 
-    if (data) {
-        if (data.passengers) {
-            passengers = data.passengers.map((p: any) => ({
+    if (booking) {
+        if (booking.passengers) {
+            passengers = booking.passengers.map((p: any) => ({
                 id: p._id,
                 passenger_name: p.name,
                 passenger_age: p.age,
                 passenger_gender: p.gender,
                 seat_number: p.seat_number,
-                flight_id: data.flight_id?._id || data.flight_id,
+                flight_id: booking.flight_id?._id || booking.flight_id,
                 checked_in: p.checked_in,
                 baggage: p.baggage
             }));
         }
 
-        if (data.flight_id) {
-            const f = data.flight_id;
+        if (booking.flight_id) {
+            const f = booking.flight_id;
             flight = {
                 id: f._id,
                 origin: f.origin,
