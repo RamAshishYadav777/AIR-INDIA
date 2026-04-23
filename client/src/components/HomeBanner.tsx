@@ -61,7 +61,7 @@ const zoomIn = keyframes`
 
 /* ---------------- 3D PARTICLES ---------------- */
 
-const GoldParticles: React.FC<{ count?: number }> = ({ count = 300 }) => {
+const GoldParticles: React.FC<{ count?: number }> = ({ count = 100 }) => {
   const ref = React.useRef<THREE.Points | null>(null);
 
   const positions = useMemo(() => {
@@ -127,26 +127,28 @@ const HomeBanner: React.FC = () => {
   const imageSettings: Settings = {
     dots: false,
     infinite: true,
-    speed: 2000,
+    speed: 1500,
     autoplay: true,
     autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
     fade: true,
+    lazyLoad: "progressive",
     beforeChange: (_c, n) => setSlideIndex(n),
   };
 
   const videoSettings: Settings = {
     dots: false,
     infinite: true,
-    speed: 2000,
+    speed: 1500,
     autoplay: true,
     autoplaySpeed: 7000,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
     fade: true,
+    lazyLoad: "progressive",
     beforeChange: (_c, n) => setVideoIndex(n),
   };
 
@@ -211,9 +213,12 @@ const HomeBanner: React.FC = () => {
     >
       {/* 3D Particles Layer */}
       <Box sx={{ position: "absolute", inset: 0, zIndex: 5, pointerEvents: "none" }}>
-        <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
+        <Canvas 
+          gl={{ antialias: false, powerPreference: "high-performance" }}
+          camera={{ position: [0, 0, 15], fov: 45 }}
+        >
           <GoldParticles />
-          <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={0.5} />
+          <Stars radius={100} depth={50} count={1000} factor={4} saturation={0} fade speed={0.5} />
         </Canvas>
       </Box>
 
