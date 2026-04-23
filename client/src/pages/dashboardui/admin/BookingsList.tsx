@@ -16,6 +16,11 @@ import {
   Avatar,
   Chip,
   InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from "@mui/material";
 import api from "../../../lib/axios";
 import toast from "react-hot-toast";
@@ -47,6 +52,8 @@ const AllBookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAllBookings();
@@ -98,49 +105,32 @@ const AllBookings: React.FC = () => {
   // ❌ DELETE BOOKING (Cancel Flight)
   // -----------------------------------------
   const handleCancelBooking = async (bookingId: string) => {
-    // Note: bookingId passed here is likely the row ID if we use row.id, 
-    // but we need the DB booking ID. The row ID is composite.
-    // However, the delete button calls handleCancelBooking(b.id). 
-    // b.id in my map above is composite.
-    // Wait, the delete button should delete the entire booking or just a passenger?
-    // My API delete /bookings/:id deletes the WHOLE booking.
-    // If I want to cancel just one passenger, I need a different API.
-    // For now, I will assume cancelling the booking (all passengers).
-    // So I need the db_booking_id. I added it to the mapped object.
+    setPendingDeleteId(bookingId);
+    setConfirmOpen(true);
+  };
 
-    // BUT the interface Booking above doesn't have db_booking_id.
-    // I need to add it or cast it.
-
-    // Let's assume bookingId passed in is actually the DB ID if I correct the call.
-    // But currently the map uses composite ID for key.
-
-    // I will look for the booking using the composite ID in my state to find real ID?
-    // Or just pass the real ID to the handler.
-
-    // I'll update the handler to find the real booking ID from the state.
-
-    // Wait, simpler: I'll accept 'id' and 'db_booking_id' in the row data.
-
-    const bookingToDelete = bookings.find(b => b.id === bookingId);
-    if (!bookingToDelete) return;
+  const handleConfirmCancel = async () => {
+    if (!pendingDeleteId) return;
+    
+    const bookingToDelete = bookings.find(b => b.id === pendingDeleteId);
+    if (!bookingToDelete) {
+      setConfirmOpen(false);
+      return;
+    }
     const realId = (bookingToDelete as any).db_booking_id;
 
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this flight booking? This will cancel for all passengers in the same booking."
-    );
-
-    if (!confirmCancel) return;
-
     try {
+      setConfirmOpen(false);
+      setLoading(true);
       await api.delete(`/bookings/${realId}`);
-
       toast.success("Booking cancelled successfully!");
-
-      // Refresh list
       fetchAllBookings();
     } catch (err: any) {
-      console.error("❌ Cancel Error:", err);
+      console.error("Cancel Error:", err);
       toast.error(err?.response?.data?.message || "Failed to cancel booking!");
+    } finally {
+      setLoading(false);
+      setPendingDeleteId(null);
     }
   };
 
@@ -362,6 +352,45 @@ const AllBookings: React.FC = () => {
           </Table>
         </TableContainer>
       )}
+
+      {/* Modern Cancellation Dialog */}
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        PaperProps={{
+          sx: { borderRadius: 4, p: 1 }
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 800, color: "#d32f2f" }}>
+          Confirm Cancellation
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ fontWeight: 500 }}>
+            Are you sure you want to cancel this flight booking?
+            <br />
+            <Box component="span" sx={{ color: "#666", fontSize: "0.85rem", mt: 1, display: "block" }}>
+              This will cancel the reservation for <strong>all passengers</strong> in this booking record. This action cannot be undone.
+            </Box>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, gap: 1 }}>
+          <Button 
+            onClick={() => setConfirmOpen(false)} 
+            sx={{ color: "#666", fontWeight: 700 }}
+          >
+            Go Back
+          </Button>
+          <Button 
+            onClick={handleConfirmCancel} 
+            variant="contained" 
+            color="error"
+            sx={{ borderRadius: 3, fontWeight: 700, px: 3 }}
+            autoFocus
+          >
+            Confirm Cancellation
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
