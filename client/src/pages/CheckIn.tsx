@@ -89,15 +89,15 @@ const CheckIn: React.FC = () => {
       const endpoint = isMongoId ? `/bookings/${bookingId}` : `/bookings/code/${bookingId}`;
 
       const response = await api.get(endpoint);
-      const data = response.data;
+      const booking = response.data.data;
 
-      if (data) {
-        setFetchedBookingId(data._id);
-        setFetchedPnr(data.pnr);
-        const flightInfo = data.flight_id;
+      if (booking) {
+        setFetchedBookingId(booking._id);
+        setFetchedPnr(booking.pnr);
+        const flightInfo = booking.flight_id;
 
-        if (data.passengers) {
-          setPassengers(data.passengers.map((row: any) => mapDbToPassenger(row, data.booking_id)));
+        if (booking.passengers) {
+          setPassengers(booking.passengers.map((row: any) => mapDbToPassenger(row, booking.booking_id)));
         }
 
         if (flightInfo) {
