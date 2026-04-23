@@ -101,11 +101,11 @@ const AgentDashboard: React.FC = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const { data: bookingRes } = await api.get("/bookings");
-            const { data: flightRes } = await api.get("/flights");
+            const { data: bookingResBody } = await api.get("/bookings");
+            const { data: flightResBody } = await api.get("/flights");
 
-            const bookings = bookingRes.data;
-            const flightData = flightRes.data;
+            const bookings = bookingResBody.data || [];
+            const flightData = flightResBody.data || [];
 
             setFlights(flightData);
 

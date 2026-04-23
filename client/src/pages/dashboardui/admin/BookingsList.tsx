@@ -57,7 +57,8 @@ const AllBookings: React.FC = () => {
     try {
       setLoading(true);
 
-      const { data } = await api.get('/bookings');
+      const response = await api.get('/bookings');
+      const data = response.data.data || [];
 
       // Flatten passengers and map fields
       const flatBookings = data.flatMap((b: any) =>
