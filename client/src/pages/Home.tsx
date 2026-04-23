@@ -10,7 +10,7 @@ import {
   Plane,
   ArrowRight
 } from "lucide-react";
-import { Flight, useFlights } from "../hooks/useFlights";
+import { type Flight, useFlights } from "../hooks/useFlights";
 
 const CITY_IMAGES: Record<string, string> = {
   "London": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=600",
