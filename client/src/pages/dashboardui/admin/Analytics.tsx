@@ -126,7 +126,7 @@ const Analytics = () => {
 
         <Grid container spacing={3}>
           {/* Top Cards */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card sx={{ borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "1px solid #EEE" }}>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant="overline" color="textSecondary" fontWeight={800}>Total Revenue</Typography>
@@ -139,7 +139,7 @@ const Analytics = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card sx={{ borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "1px solid #EEE" }}>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant="overline" color="textSecondary" fontWeight={800}>Total Bookings</Typography>
@@ -152,7 +152,7 @@ const Analytics = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card sx={{ borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "1px solid #EEE" }}>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant="overline" color="textSecondary" fontWeight={800}>Avg. Ticket Value</Typography>
@@ -167,7 +167,7 @@ const Analytics = () => {
           </Grid>
 
           {/* Revenue Heatmap */}
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Card sx={{ borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "1px solid #EEE", overflow: "hidden" }}>
               <Box sx={{ p: 3, borderBottom: "1px solid #EEE", bgcolor: "#FAFAFA" }}>
                 <Typography variant="h6" fontWeight={800}>Global Distribution Heatmap</Typography>
@@ -235,7 +235,7 @@ const Analytics = () => {
           </Grid>
 
           {/* Detailed Charts */}
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <Card sx={{ borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "1px solid #EEE", height: "100%" }}>
               <Box sx={{ p: 3, borderBottom: "1px solid #EEE", bgcolor: "#FAFAFA" }}>
                 <Typography variant="h6" fontWeight={800}>7-Day Revenue Trend</Typography>
@@ -261,7 +261,7 @@ const Analytics = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card sx={{ borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "1px solid #EEE", height: "100%" }}>
               <Box sx={{ p: 3, borderBottom: "1px solid #EEE", bgcolor: "#FAFAFA" }}>
                 <Typography variant="h6" fontWeight={800}>Revenue Share by City</Typography>
