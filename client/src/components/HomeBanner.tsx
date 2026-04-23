@@ -161,10 +161,13 @@ const HomeBanner: React.FC = () => {
     mb: 1,
   };
 
-  const renderAsset = (asset: string) => {
+  const renderAsset = (asset: string, index: number, currentIndex: number) => {
     const isVideo = typeof asset === 'string' && (/\.(mp4|webm|ogg|mov)($|\?)/i.test(asset) || asset.includes('data:video'));
+    // Only render video if it's the current, next, or previous slide to ensure smooth fade
+    const isNear = Math.abs(index - currentIndex) <= 1 || (index === 0 && currentIndex === 5) || (index === 5 && currentIndex === 0);
 
     if (isVideo) {
+      if (!isNear) return <Box sx={{ width: "100%", height: "100%", bgcolor: "#000" }} />;
       return (
         <video
           src={asset}
@@ -177,7 +180,8 @@ const HomeBanner: React.FC = () => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            display: "block"
+            display: "block",
+            willChange: "transform, opacity"
           }}
         />
       );
@@ -190,8 +194,9 @@ const HomeBanner: React.FC = () => {
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          animation: `${zoomIn} 12s ease-out forwards`,
-          display: "block"
+          animation: isNear ? `${zoomIn} 12s ease-out forwards` : "none",
+          display: "block",
+          willChange: "transform, opacity"
         }}
       />
     );
@@ -233,7 +238,7 @@ const HomeBanner: React.FC = () => {
           <Slider {...imageSettings}>
             {images.map((asset, idx) => (
               <Box key={idx} sx={{ height: { xs: "50vh", md: "85vh" }, outline: "none" }}>
-                {renderAsset(asset)}
+                {renderAsset(asset, idx, slideIndex)}
               </Box>
             ))}
           </Slider>
@@ -279,7 +284,7 @@ const HomeBanner: React.FC = () => {
           <Slider {...videoSettings}>
             {videos.map((asset, idx) => (
               <Box key={idx} sx={{ height: { xs: "50vh", md: "85vh" }, outline: "none" }}>
-                {renderAsset(asset)}
+                {renderAsset(asset, idx, videoIndex)}
               </Box>
             ))}
           </Slider>
