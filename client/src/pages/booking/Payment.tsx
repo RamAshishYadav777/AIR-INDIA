@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CreditCard, ShieldCheck, Loader2, Plane, Lock, AlertCircle, Luggage, Armchair } from "lucide-react";
 import airindiaLogo from "../../assets/logo.png";
 import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
 
 declare global {
   interface Window {
@@ -32,7 +33,7 @@ const Payment: React.FC = () => {
   const handlePaymentSuccess = async (response: any) => {
     setLoading(true);
     if (!user) {
-      alert("User not found. Please login again.");
+      toast.error("User not found. Please login again.");
       navigate("/login");
       return;
     }
@@ -49,7 +50,7 @@ const Payment: React.FC = () => {
       // const verifyData = verifyRes.data; // removed unused
 
       if (!verifyRes.success) {
-        alert("Payment verification failed! Please contact support.");
+        toast.error("Payment verification failed! Please contact support.");
         setLoading(false);
         return;
       }
@@ -100,7 +101,7 @@ const Payment: React.FC = () => {
     } catch (err: any) {
       console.error("Booking Creation Error:", err);
       const errorMsg = err.response?.data?.message || err.message || "Unknown error";
-      alert(`Error processing booking: ${errorMsg}`);
+      toast.error(`Error processing booking: ${errorMsg}`);
       setLoading(false);
     }
   };
@@ -112,7 +113,7 @@ const Payment: React.FC = () => {
     }
 
     if (!user) {
-      alert("Please login first.");
+      toast.error("Please login first.");
       navigate("/login");
       return;
     }
@@ -121,7 +122,7 @@ const Payment: React.FC = () => {
 
     try {
       if (!window.Razorpay) {
-        alert("Payment gateway is not currently available. Please check your internet connection and refresh the page.");
+        toast.error("Payment gateway is not currently available. Please check your internet connection and refresh the page.");
         setLoading(false);
         return;
       }
@@ -154,7 +155,7 @@ const Payment: React.FC = () => {
       rzp.on("payment.failed", (response: any) => {
         console.error("Payment failed:", response.error);
         dispatch(setPaymentStatus("failed"));
-        alert(`Payment failed: ${response.error.description}`);
+        toast.error(`Payment failed: ${response.error.description}`);
         setLoading(false);
       });
 
@@ -162,7 +163,7 @@ const Payment: React.FC = () => {
     } catch (err: any) {
       console.error("Razorpay Initialization Error:", err);
       const errorMsg = err.response?.data?.message || err.message || "Initialization failed";
-      alert(`Something went wrong initializing payment: ${errorMsg}`);
+      toast.error(`Something went wrong initializing payment: ${errorMsg}`);
       setLoading(false);
     }
   };
