@@ -84,7 +84,10 @@ class ChatController {
                 }
             }
 
-            res.json({ success: true, reply: finalReply });
+            res.json({ 
+                success: true, 
+                data: { reply: finalReply } 
+            });
         } catch (error) {
             res.status(500).json({ success: false, reply: "I'm having a small technical glitch. Please try again in a moment! 🙏" });
         }
