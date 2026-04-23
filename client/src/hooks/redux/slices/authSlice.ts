@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../../lib/axios";
+import toast from "react-hot-toast";
 
 // -------------------------------
 // Types
@@ -121,10 +122,12 @@ export const logoutUser = createAsyncThunk(
       await api.post('/auth/logout');
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
+      toast.success("Logged out successfully!");
       return null;
     } catch (err: any) {
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
+      toast.success("Logged out successfully!");
       return rejectWithValue("Logout failed");
     }
   }
