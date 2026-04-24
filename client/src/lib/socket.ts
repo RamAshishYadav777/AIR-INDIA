@@ -4,6 +4,6 @@ import { io } from 'socket.io-client';
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
 
 export const socket = io(SOCKET_URL, {
-    autoConnect: true,
-    transports: ['websocket', 'polling'], // Add polling as fallback
+    autoConnect: false, // Don't connect until we have auth
+    transports: ['websocket', 'polling'],
 });

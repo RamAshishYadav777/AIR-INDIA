@@ -31,15 +31,34 @@ const PORT = process.env.PORT || 5000;
 // Create HTTP server
 const httpServer = createServer(app);
 
-// Initialize Socket.IO with broad CORS for local development
+// Initialize Socket.IO with security middleware
 const io = new Server(httpServer, {
     cors: {
-        origin: "*", // Allow all origins for troubleshooting
+        origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : "*",
         methods: ["GET", "POST"]
     }
 });
 
-app.use(cors());
+// Socket.IO Authentication Middleware
+import jwt from 'jsonwebtoken';
+io.use((socket, next) => {
+    const token = socket.handshake.auth.token || socket.handshake.headers['authorization'];
+    if (!token) {
+        return next(new Error('Authentication error: No token provided'));
+    }
+    try {
+        const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
+        socket.user = decoded;
+        next();
+    } catch (err) {
+        next(new Error('Authentication error: Invalid token'));
+    }
+});
+
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : "*",
+    credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet()); // Set security HTTP headers
@@ -91,11 +110,11 @@ app.get('*', (req, res) => {
 io.on("connection", (socket) => {
     logger.info(`⚡ New client connected: ${socket.id}`);
 
-    // Join room based on userId for targeted notifications
-    socket.on("join", (userId) => {
-        if (userId) {
-            socket.join(userId.toString());
-            logger.info(`👤 User ${userId} joined room: ${userId.toString()}`);
+    // Join room based on authenticated userId
+    socket.on("join", () => {
+        if (socket.user && socket.user.id) {
+            socket.join(socket.user.id.toString());
+            logger.info(`👤 User ${socket.user.id} joined their private room`);
         }
     });
 
@@ -105,7 +124,7 @@ io.on("connection", (socket) => {
 
     // Example event listener
     socket.on("ping", (data) => {
-        console.log("Ping received:", data);
+        logger.info(`Ping received: ${JSON.stringify(data)}`);
         socket.emit("pong", { message: "Pong from server!" });
     });
 });

@@ -8,7 +8,21 @@ class BookingController {
     // @route   POST /api/bookings
     async createBooking(req, res) {
         try {
-            const newBooking = new Booking(req.body);
+            const { flight_id, user_id, passengers, total_amount, payment_status } = req.body;
+            
+            // Basic validation
+            if (!flight_id || !user_id || !passengers || !passengers.length) {
+                return res.status(400).json({ success: false, message: 'Missing required booking fields' });
+            }
+
+            const newBooking = new Booking({
+                flight_id,
+                user_id,
+                passengers,
+                total_amount,
+                payment_status: payment_status || 'pending'
+            });
+            
             const savedBooking = await newBooking.save();
 
             // Emit real-time notification via Socket.IO
@@ -84,7 +98,14 @@ class BookingController {
     // @route   GET /api/bookings/user/:userId
     async getBookingsByUser(req, res) {
         try {
-            const bookings = await Booking.find({ user_id: req.params.userId }).populate('flight_id').sort({ createdAt: -1 });
+            const { userId } = req.params;
+            
+            // Ownership check: User can only see their own bookings unless Admin
+            if (req.user.role !== 'admin' && req.user.id !== userId) {
+                return res.status(403).json({ success: false, message: 'Access denied. You can only view your own bookings.' });
+            }
+
+            const bookings = await Booking.find({ user_id: userId }).populate('flight_id').sort({ createdAt: -1 });
             const data = bookings.map(b => this.formatBooking(b));
             res.json({ success: true, count: bookings.length, data });
         } catch (err) {

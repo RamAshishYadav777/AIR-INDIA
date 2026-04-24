@@ -1,4 +1,5 @@
 import express from 'express';
+import auth, { adminAuth } from '../middleware/auth.js';
 import {
     createBooking,
     getAllBookings,
@@ -15,17 +16,17 @@ import {
 
 const router = express.Router();
 
-router.get('/admin/stats', getAdminStats);
-router.get('/admin/route-revenue', getRouteRevenue);
+router.get('/admin/stats', adminAuth, getAdminStats);
+router.get('/admin/route-revenue', adminAuth, getRouteRevenue);
 
-router.post('/', createBooking);
-router.get('/', getAllBookings);
-router.get('/:id', getBookingById);
-router.get('/code/:bookingId', getBookingByCustomId);
-router.get('/user/:userId', getBookingsByUser);
-router.get('/flight/:flightId', getBookingsByFlight);
-router.delete('/:id', deleteBooking);
-router.put('/:id/checkin', checkInPassenger);
-router.put('/:id/baggage', processBaggage);
+router.post('/', auth, createBooking);
+router.get('/', adminAuth, getAllBookings);
+router.get('/:id', auth, getBookingById);
+router.get('/code/:bookingId', getBookingByCustomId); // Public check-in check? Keep or protect? 
+router.get('/user/:userId', auth, getBookingsByUser);
+router.get('/flight/:flightId', adminAuth, getBookingsByFlight);
+router.delete('/:id', adminAuth, deleteBooking);
+router.put('/:id/checkin', auth, checkInPassenger);
+router.put('/:id/baggage', adminAuth, processBaggage);
 
 export default router;

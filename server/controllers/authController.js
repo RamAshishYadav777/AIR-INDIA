@@ -9,7 +9,7 @@ class AuthController {
     // @route   POST /api/auth/signup
     async signup(req, res) {
         try {
-            const { name, email, password, phone, role } = req.body;
+            const { name, email, password, phone } = req.body;
             
             let user = await User.findOne({ email });
             if (user) {
@@ -24,7 +24,7 @@ class AuthController {
                 email,
                 password: hashedPassword,
                 phone,
-                role: role || 'user'
+                role: 'user'
             });
 
             const accessToken = this.generateAccessToken(user);
@@ -97,7 +97,7 @@ class AuthController {
                 return res.status(403).json({ success: false, message: 'Invalid refresh token' });
             }
 
-            jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || 'refresh_secret', (err, decoded) => {
+            jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
                 if (err) return res.status(403).json({ success: false, message: 'Expired refresh token' });
 
                 const accessToken = this.generateAccessToken(user);
@@ -177,7 +177,7 @@ class AuthController {
     generateRefreshToken(user) {
         return jwt.sign(
             { id: user._id }, 
-            process.env.JWT_REFRESH_SECRET || 'refresh_secret', 
+            process.env.JWT_REFRESH_SECRET, 
             { expiresIn: '7d' }
         );
     }

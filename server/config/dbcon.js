@@ -10,6 +10,7 @@ const connectDB = async () => {
         logger.info("✅ Database Connected Successfully");
     } catch (error) {
         logger.error(`❌ Database Connection Error: ${error.message}`);
+        process.exit(1); // Crash the server if DB fails
     }
 };
 

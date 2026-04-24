@@ -65,20 +65,18 @@ const SocketManager = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    const userId = user?.id || (user as any)?._id;
-    console.log("🔌 SocketManager: Current user ID:", userId);
+    const token = localStorage.getItem('token');
+    
+    if (user && token) {
+      
+      socket.auth = { token };
+      socket.connect();
 
-    socket.on("connect", () => {
-      console.log("✅ Socket connected:", socket.id);
-      if (userId) {
-        console.log(`🔌 SocketManager: Re-joining room ${userId}`);
-        socket.emit("join", userId);
-      }
-    });
-
-    if (userId) {
-      console.log(`🔌 SocketManager: Joining room ${userId}`);
-      socket.emit("join", userId);
+      socket.on("connect", () => {
+          socket.emit("join");
+      });
+    } else {
+      socket.disconnect();
     }
 
     socket.on("notification", (notification: any) => {
@@ -160,7 +158,7 @@ const App = () => {
           />
           {/* AI Chatbot */}
           <Chatbot />
-          <ReactQueryDevtools initialIsOpen={false} />
+          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
         </AuthProvider>
       </QueryClientProvider>
     </Provider>

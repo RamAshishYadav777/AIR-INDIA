@@ -72,7 +72,6 @@ const Chatbot: React.FC = () => {
 
     if (soundEnabled) {
       const audio = new Audio("/mixkit-sci-fi-click-900.mp3");
-      audio.play().catch((e) => console.log("Audio play failed", e));
     }
 
     setInput("");
@@ -87,7 +86,6 @@ const Chatbot: React.FC = () => {
 
       if (soundEnabled) {
         const audio = new Audio("/mixkit-sci-fi-confirmation-914.mp3");
-        audio.play().catch((e) => console.log("Audio play failed", e));
       }
     } catch (err) {
       console.error("AI Error:", err);
