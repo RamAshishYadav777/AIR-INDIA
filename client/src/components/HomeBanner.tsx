@@ -118,7 +118,7 @@ const HomeBanner: React.FC = () => {
   ];
 
   const cityCaptions = [
-    "New York", "International Dining", "Paris", "Delhi", "London", "Rome", "Dubai", "Singapore"
+    "New York", "International Dining", "Rome", "Delhi", "Paris", "London", "Dubai", "Singapore"
   ];
 
   const imageSettings: Settings = {
